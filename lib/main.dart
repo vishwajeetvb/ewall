@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         )
                       ),
                     ),
-                    SizedBox(width: 5,),
+                    SizedBox(width: 3,),
                     //This text is to display the current temperature
                     Text("34 * C",style: TextStyle(
                       fontSize: 20,
