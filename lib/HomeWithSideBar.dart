@@ -17,8 +17,15 @@ class HomeWithSidebar extends StatefulWidget {
   _HomeWithSidebarState createState() => _HomeWithSidebarState();
 }
 
-class _HomeWithSidebarState extends State<HomeWithSidebar> {
+class _HomeWithSidebarState extends State<HomeWithSidebar> with TickerProviderStateMixin {
   bool sideBarActive = false;
+  AnimationController rotationController;
+  @override
+  void initState() {
+    
+    super.initState();
+    rotationController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,10 +111,60 @@ class _HomeWithSidebarState extends State<HomeWithSidebar> {
                 ),
               ),
               Container(
-
+              alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.all(20),
+                child: Text("version 1.0.0", style: TextStyle(
+                  color: Colors.grey,
+                ),),
               )
             ],
           ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 200),
+              left: (sideBarActive) ? MediaQuery.of(context).size.width*0.6 : 0,
+              top: (sideBarActive) ? MediaQuery.of(context).size.height*0.2 : 0,
+            child: RotationTransition(
+              turns: (sideBarActive) ? Tween(begin: -0.05, end: 0.0).animate(rotationController) : Tween(begin: 0.0, end: -0.05).animate(rotationController) ,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                height: (sideBarActive) ? MediaQuery.of(context).size.height*0.7 : MediaQuery.of(context).size.height,
+                width: (sideBarActive) ? MediaQuery.of(context).size.width*0.8 : MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                  color: Colors.white
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                  child: HomePage(),
+                ),
+              ),
+            )
+          ),
+          Positioned(
+            right: 0,
+            top: 20,
+            child: (sideBarActive) ? IconButton(
+              padding: EdgeInsets.all(30),
+              onPressed: closeSideBar,
+              icon: Icon(
+                Icons.close,
+                color: Colors.black,
+                size: 30,
+              ),
+            ) : InkWell(
+              onTap: openSideBar,
+              child: Container(
+                margin: EdgeInsets.all(17),
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('asset/images/menu.png')
+                  )
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -132,6 +189,20 @@ class _HomeWithSidebarState extends State<HomeWithSidebar> {
         ),)
       ],
     );
+  }
+
+  void closeSideBar(){
+    sideBarActive = false;
+    setState(() {
+
+    });
+  }
+
+  void openSideBar(){
+    sideBarActive = true;
+    setState(() {
+
+    });
   }
 }
 
