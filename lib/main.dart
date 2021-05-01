@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'package:ewall/HomeWithSideBar.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
       routes: {
-        '/homePage' : (context)=>HomePage(),
+        '/homePage' : (context)=>HomeWithSideBar(),
       },
     );
   }
