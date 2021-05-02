@@ -22,7 +22,7 @@ class _HomeWithSidebarState extends State<HomeWithSidebar> with TickerProviderSt
   AnimationController rotationController;
   @override
   void initState() {
-    
+
     super.initState();
     rotationController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
   }
@@ -39,7 +39,7 @@ class _HomeWithSidebarState extends State<HomeWithSidebar> with TickerProviderSt
                 children: [
                   Container(
                     height: 150,
-                    width: MediaQuery.of(context).size.width*0.6,
+                    width: MediaQuery.of(context).size.width*0.7,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(bottomRight: Radius.circular(60)),
                       color: Colors.white,
@@ -127,7 +127,7 @@ class _HomeWithSidebarState extends State<HomeWithSidebar> with TickerProviderSt
               turns: (sideBarActive) ? Tween(begin: -0.05, end: 0.0).animate(rotationController) : Tween(begin: 0.0, end: -0.05).animate(rotationController) ,
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 200),
-                height: (sideBarActive) ? MediaQuery.of(context).size.height*0.7 : MediaQuery.of(context).size.height,
+                height: (sideBarActive) ? MediaQuery.of(context).size.height*0.8 : MediaQuery.of(context).size.height,
                 width: (sideBarActive) ? MediaQuery.of(context).size.width*0.8 : MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(40)),
