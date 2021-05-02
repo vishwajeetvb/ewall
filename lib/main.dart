@@ -1,7 +1,10 @@
 
+import 'package:ewall/screens/MyLoginHome.dart';
+import 'package:ewall/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'package:ewall/HomeWithSideBar.dart';
+
 
 void main() {
   runApp(MyApp());
