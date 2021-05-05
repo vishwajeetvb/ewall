@@ -1,12 +1,10 @@
 
-import 'package:ewall/screens/auth/MyLoginHome.dart';
-import 'package:ewall/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/appScreen/HomePage.dart';
-import 'package:ewall/screens/appScreen/HomeWithSideBar.dart';
+//import 'package:eWall/screens/appScreen/HomeWithSideBar.dart';
 
 
-void main() {
+Future<void> main() async {
   runApp(MyApp());
 }
 
@@ -19,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
       routes: {
-        '/homePage' : (context)=>MyLoginHome(),
+        '/homePage' : (context)=>HomePage(),
       },
     );
   }
@@ -55,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //This row will contain the content of top line which have time and image of cloud for temperatur
+                //This row will contain the content of top line which have time and image of cloud for temperature
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
