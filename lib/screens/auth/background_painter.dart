@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:ewall/HomePage.dart';
+import 'package:ewall/screens/appScreen/HomePage.dart';
 import 'package:ewall/config/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';

@@ -1,9 +1,9 @@
 
-import 'package:ewall/screens/MyLoginHome.dart';
+import 'package:ewall/screens/auth/MyLoginHome.dart';
 import 'package:ewall/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
-import 'package:ewall/HomeWithSideBar.dart';
+import 'screens/appScreen/HomePage.dart';
+import 'package:ewall/screens/appScreen/HomeWithSideBar.dart';
 
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
       routes: {
-        '/homePage' : (context)=>HomeWithSideBar(),
+        '/homePage' : (context)=>MyLoginHome(),
       },
     );
   }
