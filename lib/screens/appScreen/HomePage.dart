@@ -14,11 +14,13 @@ class HomePage extends StatelessWidget {
 }
 
 class homePage extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _homePageState createState() => _homePageState();
 }
 
 class _homePageState extends State<homePage> {
+
   @override
   Widget build(BuildContext context) {
     //This Scaffold for next screen after clicking on sign in

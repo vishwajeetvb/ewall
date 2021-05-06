@@ -1,19 +1,23 @@
 
-import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const routeName = '/login';
-  const LoginScreen({Key key}) : super(key: key);
+import 'login_screen.dart';
+
+class SignupScreen extends StatefulWidget {
+
+  static const routeName = '/signup';
+  const SignupScreen({Key key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
+  TextEditingController _passwordController = new TextEditingController();
+
 
   void _submit(){
 
@@ -24,19 +28,19 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Login Screen'),
+        title: Text('SignUp Screen'),
         actions: <Widget>[
           FlatButton(
-              child: Row(
-                children: <Widget>[
-                  Text('SignUp'),
-                  Icon(Icons.person_add)
-                ],
-              ),
-              textColor: Colors.white,
-              onPressed: (){
-                  Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
-              },
+            child: Row(
+              children: <Widget>[
+                Text('Login'),
+                Icon(Icons.person)
+              ],
+            ),
+            textColor: Colors.white,
+            onPressed: (){
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+            },
           )
         ],
       ),
@@ -44,12 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.lightGreenAccent,
-                  Colors.blue
-                ]
-              )
+                gradient: LinearGradient(
+                    colors: [
+                      Colors.limeAccent,
+                      Colors.red
+                    ]
+                )
             ),
           ),
           Center(
@@ -58,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Container(
-                height: 260,
+                height: 300,
                 width: 300,
                 padding: EdgeInsets.all(16),
                 child: Form(
@@ -83,8 +87,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           decoration: InputDecoration(labelText: 'Password'),
                           obscureText: true,
+                          controller: _passwordController,
                           validator: (value){
                             if(value.isEmpty || value.length<=5){
+                              return 'Invalid Password';
+                            }
+                            return null;
+                          },
+                          onSaved: (value){
+
+                          },
+                        ),
+                        //Confirm Password
+                        TextFormField(
+                          decoration: InputDecoration(labelText: 'Confirm Password'),
+                          obscureText: true,
+                          validator: (value){
+                            if(value.isEmpty || value!=_passwordController.text){
                               return 'Invalid Password';
                             }
                             return null;
@@ -96,15 +115,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 30,),
                         //Button For Submission
                         RaisedButton(
-                            child: Text('Submit'),
-                            onPressed: (){
-                              _submit();
-                            },
-                            shape : RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            color : Colors.blue,
-                            textColor: Colors.white,
+                          child: Text('Submit'),
+                          onPressed: (){
+                            _submit();
+                          },
+                          shape : RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          color : Colors.blue,
+                          textColor: Colors.white,
                         ),
                       ],
                     ),
