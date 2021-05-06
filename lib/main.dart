@@ -1,4 +1,5 @@
 
+import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/appScreen/HomePage.dart';
 //import 'package:eWall/screens/appScreen/HomeWithSideBar.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
       routes: {
-        '/homePage' : (context)=>HomePage(),
+        '/homePage' : (context)=>LoginScreen(),
       },
     );
   }
