@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'HomePage.dart';
 
 class HomeWithSideBar extends StatelessWidget {
+  static const routeName = '/home_page';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,6 +14,7 @@ class HomeWithSideBar extends StatelessWidget {
 }
 
 class HomeWithSidebar extends StatefulWidget {
+
   @override
   _HomeWithSidebarState createState() => _HomeWithSidebarState();
 }

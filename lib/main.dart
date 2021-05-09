@@ -1,4 +1,6 @@
 
+import 'package:ewall/screens/appScreen/HomePage.dart';
+import 'package:ewall/screens/appScreen/HomeWithSideBar.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +21,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: MyHomePage(),
         routes: {
-          '/homePage' : (context)=>SignupScreen(),
+          '/homePage' : (context)=>HomeWithSideBar(),
           LoginScreen.routeName : (context)=>LoginScreen(),
           SignupScreen.routeName : (context)=>SignupScreen(),
+          HomeWithSideBar.routeName : (context) => HomeWithSideBar(),
         },
       );
   }
@@ -170,6 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   //This Method to navigate to next page when click on sign up button
   void openHomePage(){
-    Navigator.pushNamed(context, '/homePage');
+    Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
   }
 }

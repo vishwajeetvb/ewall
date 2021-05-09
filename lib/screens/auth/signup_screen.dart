@@ -23,12 +23,13 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _confirmPasswordController = new TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
 
   _submit() async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text)
-      .then((value) => print("Register Done"))
+      .then((value) => user.sendEmailVerification()).then((value) => Navigator.of(context).pushReplacementNamed(LoginScreen.routeName))
       ;
     } on FirebaseAuthException catch  (e) {
       print('Failed with error code: ${e.code}');

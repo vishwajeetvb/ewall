@@ -1,4 +1,6 @@
 
+import 'package:ewall/screens/appScreen/HomePage.dart';
+import 'package:ewall/screens/appScreen/HomeWithSideBar.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +20,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
 
   void _submit() async{
      await _firebaseAuth.signInWithEmailAndPassword(
          email: _emailController.text, password : _passwordController.text)
          .then((value) => print("Login Successfull"))
      ;
-     
-  }
+     if (!user.emailVerified) {
+       showDialog(
+         context: context,
+         builder: (BuildContext context) => _buildPopupDialog(context,"Please Verify your Email"),
+       );
+     }else{
+       Navigator.of(context).pushReplacementNamed(HomeWithSideBar.routeName);
+     }
+     }
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,4 +139,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
     );
   }
+}
+
+//PopUp Builder
+Widget _buildPopupDialog(BuildContext context, String text) {
+  return new AlertDialog(
+    title: const Text('Important'),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(text),
+      ],
+    ),
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        textColor: Theme.of(context).primaryColor,
+        child: const Text('Close'),
+      ),
+    ],
+  );
 }
