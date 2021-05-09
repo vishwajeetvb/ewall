@@ -2,9 +2,6 @@
 import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/appScreen/HomePage.dart';
-//import 'package:eWall/screens/appScreen/HomeWithSideBar.dart';
-
 
 Future<void> main() async {
   runApp(MyApp());
@@ -15,15 +12,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //To hide the debug banner on homepage
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-      routes: {
-        '/homePage' : (context)=>SignupScreen(),
-        LoginScreen.routeName : (context)=>LoginScreen(),
-        SignupScreen.routeName : (context)=>SignupScreen(),
-      },
-    );
+        //To hide the debug banner on homepage
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(),
+        routes: {
+          '/homePage' : (context)=>SignupScreen(),
+          LoginScreen.routeName : (context)=>LoginScreen(),
+          SignupScreen.routeName : (context)=>SignupScreen(),
+        },
+      );
   }
 }
 

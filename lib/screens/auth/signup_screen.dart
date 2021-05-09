@@ -1,6 +1,8 @@
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 import 'login_screen.dart';
 
@@ -19,7 +21,8 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _passwordController = new TextEditingController();
 
 
-  void _submit(){
+
+  _submit() {
 
   }
 
@@ -76,12 +79,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: (value)
                           {
-                            if(value.isEmpty || value.contains('@')){
+                            if(value.isEmpty || !value.contains('@')){
                               return 'Invalid Email';
                             }
                             return null;
                           },
-                          onSaved: (value){},
+                          onSaved: (value){
+
+                          },
                         ),
                         //Password Field
                         TextFormField(
@@ -89,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           obscureText: true,
                           controller: _passwordController,
                           validator: (value){
-                            if(value.isEmpty || value.length<=5){
+                            if(value.isEmpty){
                               return 'Invalid Password';
                             }
                             return null;
