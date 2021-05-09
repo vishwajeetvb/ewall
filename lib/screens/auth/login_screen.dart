@@ -2,6 +2,7 @@
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -14,9 +15,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
-  void _submit(){
-
+  void _submit() async{
+     await _firebaseAuth.signInWithEmailAndPassword(
+         email: _emailController.text, password : _passwordController.text)
+         .then((value) => print("Login Successfull"))
+     ;
+     
   }
 
   @override
@@ -68,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: <Widget>[
                         //Email
                         TextFormField(
+                          controller: _emailController,
                           decoration: InputDecoration(labelText: 'Email'),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value)
@@ -81,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         //Password Field
                         TextFormField(
+                          controller: _passwordController,
                           decoration: InputDecoration(labelText: 'Password'),
                           obscureText: true,
                           validator: (value){

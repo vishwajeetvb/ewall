@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 
 import 'login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -17,12 +18,22 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey();
+  TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _confirmPasswordController = new TextEditingController();
 
-
-
-  _submit() {
+  _submit() async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text)
+      .then((value) => print("Register Done"))
+      ;
+    } on FirebaseAuthException catch  (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
 
   }
 
@@ -75,6 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: <Widget>[
                         //Email
                         TextFormField(
+                          controller: _emailController,
                           decoration: InputDecoration(labelText: 'Email'),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value)
@@ -90,9 +102,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         //Password Field
                         TextFormField(
+                          controller: _passwordController,
                           decoration: InputDecoration(labelText: 'Password'),
                           obscureText: true,
-                          controller: _passwordController,
                           validator: (value){
                             if(value.isEmpty){
                               return 'Invalid Password';

@@ -1,78 +1,33 @@
 {
   "project_info": {
-    "project_number": "16452917652",
-    "project_id": "ewall-project-5570f",
-    "storage_bucket": "ewall-project-5570f.appspot.com"
+    "project_number": "964182031542",
+    "project_id": "ewall-c405c",
+    "storage_bucket": "ewall-c405c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:16452917652:android:cd7a1e56002c4c0a9c1781",
+        "mobilesdk_app_id": "1:964182031542:android:91ee88d7429ec40aca7a17",
         "android_client_info": {
           "package_name": "com.example.ewall"
         }
       },
       "oauth_client": [
         {
-          "client_id": "16452917652-ghphgdp0od8nvr9evt3vqbkjodd117va.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ewall",
-            "certificate_hash": "564ecc0f1d1326f70c17ed6852162769b20be68d"
-          }
-        },
-        {
-          "client_id": "16452917652-tht4h3f0u6tdeh2k38vue1mr9b2e9q20.apps.googleusercontent.com",
+          "client_id": "964182031542-g4mdq4mjc0ddiaf50s6qas7korhc2ffp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDuZX5KorQcgSWPKpEbsLV3tBQ6B9Pwlu8"
+          "current_key": "AIzaSyA2EdYq9PTZcg1LAIhOl9FOWcbBPslzDjQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "16452917652-tht4h3f0u6tdeh2k38vue1mr9b2e9q20.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:16452917652:android:a6ce82d87e098aa29c1781",
-        "android_client_info": {
-          "package_name": "com.piet.eWall"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "16452917652-6tumcacg6uuu6pho9sahtcnk6mft8e2m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.piet.eWall",
-            "certificate_hash": "564ecc0f1d1326f70c17ed6852162769b20be68d"
-          }
-        },
-        {
-          "client_id": "16452917652-tht4h3f0u6tdeh2k38vue1mr9b2e9q20.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDuZX5KorQcgSWPKpEbsLV3tBQ6B9Pwlu8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "16452917652-tht4h3f0u6tdeh2k38vue1mr9b2e9q20.apps.googleusercontent.com",
+              "client_id": "964182031542-g4mdq4mjc0ddiaf50s6qas7korhc2ffp.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
