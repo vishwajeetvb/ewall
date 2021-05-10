@@ -145,7 +145,7 @@ class _IntroScreenState extends State<IntroScreen> {
   void openHomePage(){
 
     //Here in this navigator we push the screen to next Screen which is signupScreen
-    Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
   }
 }
 

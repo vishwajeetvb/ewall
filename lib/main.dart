@@ -1,6 +1,7 @@
 
 
 import 'package:ewall/screens/appScreen/home/HomeWithSideBar.dart';
+import 'package:ewall/screens/appScreen/home/SendMoney.dart';
 import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
@@ -32,10 +33,9 @@ class MyApp extends StatelessWidget {
         home: IntroScreen(),
         //These routes to set particular screen by calling their router Name
         routes: {
-          '/homePage' : (context)=>HomeWithSideBar(),
-          LoginScreen.routeName : (context)=>LoginScreen(),
-          SignupScreen.routeName : (context)=>SignupScreen(),
+          LoginScreen.routeName : (context) => LoginScreen(),
           HomeWithSideBar.routeName : (context) => HomeWithSideBar(),
+
         },
       );
   }

@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
 
-  static const routeName = '/signup';
   const SignupScreen({Key key}) : super(key: key);
 
   @override
@@ -27,7 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text)
-      .then((value) => user.sendEmailVerification()).then((value) => Navigator.of(context).pushReplacementNamed(LoginScreen.routeName))
+      .then((value) => user.sendEmailVerification()).then((value) => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen())))
       ;
     } on FirebaseAuthException catch  (e) {
       print('Failed with error code: ${e.code}');
@@ -53,7 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             textColor: Colors.white,
             onPressed: (){
-              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
             },
           )
         ],

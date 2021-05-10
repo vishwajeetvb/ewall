@@ -1,4 +1,5 @@
 
+import 'package:ewall/screens/appScreen/home/SendMoney.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +109,8 @@ class _homePageState extends State<homePage> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                //This Row for Send Money and Scanqr icon
+
+                //This Row for Send Money and Send Money Icon
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -117,17 +119,26 @@ class _homePageState extends State<homePage> {
                       fontWeight: FontWeight.w800,
                       fontFamily: 'avenir',
                     ),),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('asset/images/scanqr.png'),
-                        )
+
+                    //Button for Navigating to the next page for sending Money
+                    IconButton(
+                      onPressed: (){
+                        setState(() {
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
+                        });
+                      },
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.black87,
+                        size: 35,
                       ),
-                    )
+                    ),
                   ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -192,7 +203,9 @@ class _homePageState extends State<homePage> {
          children: [
            Expanded(
                child: InkWell(
-                 onTap: (){},
+                 onTap: (){
+
+                 },
                  child: Container(
                    margin: EdgeInsets.all(4),
                    decoration: BoxDecoration(

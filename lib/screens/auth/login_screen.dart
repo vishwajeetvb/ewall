@@ -8,9 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
 
-  //routeName variable declared to be used to navigate to this page
   static const routeName = '/login';
-
   const LoginScreen({Key key}) : super(key: key);
 
   @override
@@ -79,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               //Redirect User to Signup Page When click on it
               onPressed: (){
-                  Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
               },
           )
         ],
