@@ -1,6 +1,6 @@
 
-import 'package:ewall/screens/appScreen/HomePage.dart';
-import 'package:ewall/screens/appScreen/HomeWithSideBar.dart';
+import 'package:ewall/screens/appScreen/home/HomePage.dart';
+import 'package:ewall/screens/appScreen/home/HomeWithSideBar.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,15 +25,17 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submit() async{
      await _firebaseAuth.signInWithEmailAndPassword(
          email: _emailController.text, password : _passwordController.text)
-         .then((value) => print("Login Successfull"))
      ;
      if (!user.emailVerified) {
        showDialog(
          context: context,
-         builder: (BuildContext context) => _buildPopupDialog(context,"Please Verify your Email"),
+         builder: (BuildContext context) => _buildPopupDialog(context,"Important","Please Verify your Email",'Verify Email',LoginScreen.routeName),
        );
      }else{
-       Navigator.of(context).pushReplacementNamed(HomeWithSideBar.routeName);
+       showDialog(
+         context: context,
+         builder: (BuildContext context) => _buildPopupDialog(context,"Success","Login Successfull",'Let\'s Go',HomeWithSideBar.routeName),
+       );
      }
      }
 
@@ -142,9 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 //PopUp Builder
-Widget _buildPopupDialog(BuildContext context, String text) {
+Widget _buildPopupDialog(BuildContext context,String header,String text,String buttonText,[var routeName]) {
   return new AlertDialog(
-    title: const Text('Important'),
+    title: Text(header),
     content: new Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,10 +157,10 @@ Widget _buildPopupDialog(BuildContext context, String text) {
     actions: <Widget>[
       new FlatButton(
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacementNamed(routeName);
         },
         textColor: Theme.of(context).primaryColor,
-        child: const Text('Close'),
+        child: Text(buttonText),
       ),
     ],
   );
