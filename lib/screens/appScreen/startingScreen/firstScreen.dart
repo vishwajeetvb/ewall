@@ -9,12 +9,15 @@ class IntroScreen extends StatefulWidget {
   _IntroScreenState createState() => _IntroScreenState();
 }
 
+//Implementation of Intro Screen(First Screen)
 class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      //Whole Screen is implemented in Row Container
       body: Row(
+        //It Have different children widgets
         children: [
           //With this container added the side image big one
           Container(
@@ -26,14 +29,21 @@ class _IntroScreenState extends State<IntroScreen> {
                 )
             ),
           ),
-          //With this container we add the side content of the image
+
+          //With this container we add the side content of the rest of the screen
           Container(
+            //Used Media Query for rest of the screen
             width: MediaQuery.of(context).size.width*0.7,
             padding: EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+
+            //Implemented the rest as one column
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+
+              //It have children widgets
               children: [
-                //This row will contain the content of top line which have time and image of cloud for temperature
+
+                //This row will contain the content of top line which have Time
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -47,36 +57,25 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: Container(),
                     ),
                     //This container to contain the corner image of cloud
-                    Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('asset/images/cloud.png'),
-                              fit : BoxFit.contain
-                          )
-                      ),
-                    ),
-                    SizedBox(width: 3,),
-                    //This text is to display the current temperature
-                    Text("34 * C",style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'avenir',
-                        fontWeight: FontWeight.w800
-                    ),)
+
                   ],
                 ),
+
                 //This text for display of current date and day
                 Text("Aug 1, 2020 | Wednesday", style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey
                 ),),
-                Expanded(child: Container(
-                  child: Column(
+
+                //Expanded Widget used to put the center content on screen
+                Expanded(
+                  child: Container(
+                    child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      //This container for the logo and for the content of rest of screen
+
+                      //This container for the logo
                       Container(
                         height: 70,
                         width: 70,
@@ -87,20 +86,25 @@ class _IntroScreenState extends State<IntroScreen> {
                             )
                         ),
                       ),
+
                       //This text to display the ewall logo
                       Text("eWall", style: TextStyle(
                           fontSize: 50,
                           fontFamily: "ubuntu",
                           fontWeight: FontWeight.w600
                       ),),
+
                       SizedBox(height: 10,),
+
                       //This text to display the lucrative content
                       Text("Open An Account For \nDigital E-Wallet Solutions. \nInstant Payouts. \n\nJoin For Free", style: TextStyle(
                           color: Colors.grey
                       ),)
+
                     ],
                   ),
                 ),),
+
                 //This InkWell to provide user an tapping button to go to next page and sign up
                 InkWell(
                   //When tap it will invoke openHomePage Method
@@ -129,14 +133,6 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Center(
-                    child: Text("Create an account",style: TextStyle(
-                      fontSize: 16,
-                    ),)
-                )
               ],
             ),
           )
@@ -144,8 +140,11 @@ class _IntroScreenState extends State<IntroScreen> {
       ),
     );
   }
+
   //This Method to navigate to next page when click on sign up button
   void openHomePage(){
+
+    //Here in this navigator we push the screen to next Screen which is signupScreen
     Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
   }
 }
