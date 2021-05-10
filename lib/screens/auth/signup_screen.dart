@@ -1,9 +1,6 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
 import 'login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _confirmPasswordController = new TextEditingController();
   User user = FirebaseAuth.instance.currentUser;
 
+  //Logic of Register Button
   _submit() async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
@@ -38,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   }
 
+  //Main Widget Logic of SignUp Page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

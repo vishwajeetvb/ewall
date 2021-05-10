@@ -2,7 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,7 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
 
+  //Main Logic of Home Page
   @override
   Widget build(BuildContext context) {
     //This Scaffold for next screen after clicking on sign in
@@ -185,7 +185,8 @@ class _homePageState extends State<homePage> {
       ),
     );
   }
-  //Our sericeWidget
+
+  //Our serviceWidget
   Column serviceWidget(String img, String name){
        return Column(
          children: [
@@ -220,6 +221,7 @@ class _homePageState extends State<homePage> {
          ],
        );
   }
+
   //Our avatarWidget Method
   Container avatarWidget(String img, String name){
     return Container(
