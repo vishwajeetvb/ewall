@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
 
+  static const routeName = '/signup';
+
   const SignupScreen({Key key}) : super(key: key);
 
   @override
@@ -24,13 +26,22 @@ class _SignupScreenState extends State<SignupScreen> {
   //Logic of Register Button
   _submit() async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text)
-      .then((value) => user.sendEmailVerification()).then((value) => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen())))
+      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen())))
       ;
     } on FirebaseAuthException catch  (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+      if (e.code == 'weak-password') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Password Provided is too-weak",'Try Again',SignupScreen.routeName),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Account Already Exists for That Email",'Try Again',SignupScreen.routeName),
+        );
+      }
     }
 
   }
@@ -154,3 +165,34 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
+
+//PopUp Method logic
+Widget _buildPopupDialog(BuildContext context,String header,String text,String buttonText,[var routeName]) {
+  return new AlertDialog(
+    //Title Text
+    title: Text(header),
+
+    //Column used for that text display on popup
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        //Text which we need to display on Screen
+        Text(text),
+      ],
+    ),
+
+    //Action widget what to do when pressed Button
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: () {
+          //Navigate user to Specified routePage passed in parameter
+          Navigator.of(context).pushReplacementNamed(routeName);
+        },
+        textColor: Theme.of(context).primaryColor,
+        child: Text(buttonText),
+      ),
+    ],
+  );
+}
+

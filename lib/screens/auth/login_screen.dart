@@ -1,6 +1,6 @@
 
 import 'package:ewall/screens/appScreen/home/HomePage.dart';
-import 'package:ewall/screens/appScreen/home/HomeWithSideBar.dart';
+
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,14 +30,30 @@ class _LoginScreenState extends State<LoginScreen> {
   //Logic of Login Button
   void _submit() async{
 
-     //Calling method to create user with email & password
-     await _firebaseAuth.signInWithEmailAndPassword(
-         email: _emailController.text, password : _passwordController.text)
-     ;
+     //Calling method to sign in  with email & password
+    try{
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailController.text, password : _passwordController.text)
+      ;
+    }on FirebaseAuthException catch(e){
+      if (e.code == 'user-not-found') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Email Not Found",'Try Again',LoginScreen.routeName),
+        );
+      } else if (e.code == 'wrong-password') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Wrong Credentials",'Try Again',LoginScreen.routeName),
+        );
+      }
+    }
+
 
      //if user email is not verified or not
      if (!user.emailVerified) {
        //Pop up dialog box & say Please verify your email
+       await user.sendEmailVerification();
        showDialog(
          context: context,
          builder: (BuildContext context) => _buildPopupDialog(context,"Important","Please Verify your Email",'Verify Email',LoginScreen.routeName),
@@ -46,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
        //If its verified pop up & say login successfull & redirect to home screen
        showDialog(
          context: context,
-         builder: (BuildContext context) => _buildPopupDialog(context,"Success","Login Successfull",'Let\'s Go',HomeWithSideBar.routeName),
+         builder: (BuildContext context) => _buildPopupDialog(context,"Success","Login Successfull",'Let\'s Go',homePage.routeName),
        );
      }
      }

@@ -1,6 +1,6 @@
 
 
-import 'package:ewall/screens/appScreen/home/HomeWithSideBar.dart';
+import 'package:ewall/screens/appScreen/home/HomePage.dart';
 import 'package:ewall/screens/appScreen/home/SendMoney.dart';
 import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
@@ -23,6 +23,7 @@ Future<void> main() async {
 */
 
 class MyApp extends StatelessWidget {
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,9 @@ class MyApp extends StatelessWidget {
         home: IntroScreen(),
         //These routes to set particular screen by calling their router Name
         routes: {
+          homePage.routeName : (context) => homePage(),
           LoginScreen.routeName : (context) => LoginScreen(),
-          HomeWithSideBar.routeName : (context) => HomeWithSideBar(),
+          SignupScreen.routeName : (context) => SignupScreen(),
 
         },
       );

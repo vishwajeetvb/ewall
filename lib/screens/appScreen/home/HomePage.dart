@@ -1,5 +1,6 @@
 
 import 'package:ewall/screens/appScreen/home/SendMoney.dart';
+import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,172 +27,181 @@ class _homePageState extends State<homePage> {
   Widget build(BuildContext context) {
     //This Scaffold for next screen after clicking on sign in
     return Scaffold(
+      drawer: SideDrawer(),
+      appBar: AppBar(
+        title: Text('TransManager'),
+        backgroundColor: Color(0xffffac30),
+      ),
       //This will set screen full white
       backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //This is the top row of screen
-                Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('asset/images/logo.png'),
-                        )
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          height: MediaQuery.of(context).size.height*1,
+          padding: EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //This is the top row of screen
+                  Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('asset/images/logo.png'),
+                          )
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    //This Text will display eWall
-                    Text("eWall",style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'ubuntu',
-                      fontSize: 25
-                    ),),
-                  ],
-                ),
-                ],
-            ),
-                SizedBox(height: 20,),
-                Text("Account Overview",style: TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'avenir',
-                ),),
-                SizedBox(height: 10,),
-                //This container for that whole white box and icon
-                Container(
-                  padding: EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xfff1f3f6),
+                      SizedBox(width: 5,),
+                      //This Text will display eWall
+                      Text("TransManager",style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'ubuntu',
+                        fontSize: 25
+                      ),),
+                    ],
                   ),
-                  child: Row(
+                  ],
+              ),
+                  SizedBox(height: 20,),
+                  Text("Account Overview",style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'avenir',
+                  ),),
+                  SizedBox(height: 10,),
+                  //This container for that whole white box and icon
+                  Container(
+                    padding: EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Color(0xfff1f3f6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //This Column for that white space to show balance
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("20,600",style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                            ),),
+                            SizedBox(height: 5,),
+                            Text("Current Balance", style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),)
+                          ],
+                        ),
+                        //This column for that icon
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xffffac30),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 30,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+
+                  //This Row for Send Money and Send Money Icon
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      //This Column for that white space to show balance
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("20,600",style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                          ),),
-                          SizedBox(height: 5,),
-                          Text("Current Balance", style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),)
-                        ],
+                      Text("Send Money", style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'avenir',
+                      ),),
+
+                      //Button for Navigating to the next page for sending Money
+                      IconButton(
+                        onPressed: (){
+                          setState(() {
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
+                          });
+                        },
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.black87,
+                          size: 35,
+                        ),
                       ),
-                      //This column for that icon
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 70,
+                          width: 70,
+                          margin: EdgeInsets.only(right: 20),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xffffac30),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 40,
+                          ),
+                        ),
+                        avatarWidget("avatar1","Mike"),
+                        avatarWidget("avatar2","Joseph"),
+                        avatarWidget("avatar3","Ashley"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Services', style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'avenir',
+                      ),),
                       Container(
                         height: 60,
                         width: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xffffac30),
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          size: 30,
-                        ),
+                        child: Icon(Icons.dialpad),
                       )
                     ],
                   ),
-                ),
-                SizedBox(height: 10,),
-
-                //This Row for Send Money and Send Money Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Send Money", style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'avenir',
-                    ),),
-
-                    //Button for Navigating to the next page for sending Money
-                    IconButton(
-                      onPressed: (){
-                        setState(() {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
-                        });
-                      },
-                      icon: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black87,
-                        size: 35,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 70,
-                        width: 70,
-                        margin: EdgeInsets.only(right: 20),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xffffac30),
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          size: 40,
-                        ),
-                      ),
-                      avatarWidget("avatar1","Mike"),
-                      avatarWidget("avatar2","Joseph"),
-                      avatarWidget("avatar3","Ashley"),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Services', style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'avenir',
-                    ),),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      child: Icon(Icons.dialpad),
-                    )
-                  ],
-                ),
-                Expanded(
-                    child: GridView.count(crossAxisCount: 4,
-                    childAspectRatio: 0.7,
-                      children: [
-                        serviceWidget("sendMoney","Send\nMoney"),
-                        serviceWidget("receiveMoney","Receive\nMoney"),
-                        serviceWidget("phone","Mobile\nRecharge"),
-                        serviceWidget("electricity","Electricity\nBill"),
-                        serviceWidget("tag","Cashback\nOffer"),
-                        serviceWidget("flight","Flight\nTicket"),
-                        serviceWidget("more","More\n"),
-                      ],
-                    ))
-              ],
+                  Expanded(
+                      child: GridView.count(crossAxisCount: 4,
+                      childAspectRatio: 0.7,
+                        children: [
+                          serviceWidget("sendMoney","Send\nMoney"),
+                          serviceWidget("receiveMoney","Receive\nMoney"),
+                          serviceWidget("phone","Mobile\nRecharge"),
+                          serviceWidget("electricity","Electricity\nBill"),
+                          serviceWidget("tag","Cashback\nOffer"),
+                          serviceWidget("flight","Flight\nTicket"),
+                          serviceWidget("more","More\n"),
+                        ],
+                      ))
+                ],
+          ),
         ),
       ),
     );

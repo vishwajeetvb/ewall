@@ -1,6 +1,9 @@
 
+import 'package:ewall/screens/appScreen/home/HomePage.dart';
+
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key key}) : super(key: key);
@@ -11,6 +14,22 @@ class IntroScreen extends StatefulWidget {
 
 //Implementation of Intro Screen(First Screen)
 class _IntroScreenState extends State<IntroScreen> {
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  //This method check Whether User is logged In or not
+  void _currentState(){
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User user) {
+      if (user == null) {
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
+      } else {
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => homePage()));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +107,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
 
                       //This text to display the ewall logo
-                      Text("eWall", style: TextStyle(
+                      Text("TransManager", style: TextStyle(
                           fontSize: 50,
                           fontFamily: "ubuntu",
                           fontWeight: FontWeight.w600
@@ -120,8 +139,8 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Sign Up", style: TextStyle(
-                              fontSize: 14,
+                          Text("Let'\s Go", style: TextStyle(
+                              fontSize: 20,
                               fontWeight: FontWeight.w700
                           ),),
                           Icon(
@@ -143,9 +162,9 @@ class _IntroScreenState extends State<IntroScreen> {
 
   //This Method to navigate to next page when click on sign up button
   void openHomePage(){
-
     //Here in this navigator we push the screen to next Screen which is signupScreen
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
+    _currentState();
+
   }
 }
 
