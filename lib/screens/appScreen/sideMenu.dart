@@ -1,3 +1,4 @@
+import 'package:ewall/screens/appScreen/expense_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home/HomePage.dart';
@@ -35,12 +36,12 @@ class _SideDrawerState extends State<SideDrawer> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => {},
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()))},
           ),
           ListTile(
             leading: Icon(Icons.monetization_on_sharp),
-            title: Text('Expense Manager'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => homePage()))},
+            title: Text('Expense Dashboard'),
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ExpenseManagement()))},
           ),
           ListTile(
             leading: Icon(Icons.border_color),
