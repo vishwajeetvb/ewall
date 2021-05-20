@@ -107,7 +107,12 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
 
                       //This text to display the ewall logo
-                      Text("TransManager", style: TextStyle(
+                      Text("Trans", style: TextStyle(
+                          fontSize: 50,
+                          fontFamily: "ubuntu",
+                          fontWeight: FontWeight.w600
+                      ),),
+                      Text("Manager", style: TextStyle(
                           fontSize: 50,
                           fontFamily: "ubuntu",
                           fontWeight: FontWeight.w600
@@ -116,7 +121,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       SizedBox(height: 10,),
 
                       //This text to display the lucrative content
-                      Text("Open An Account For \nDigital E-Wallet Solutions. \nInstant Payouts. \n\nJoin For Free", style: TextStyle(
+                      Text("Manage Our Transactions \nWith Instant Visuals \n\nJoin For Free", style: TextStyle(
                           color: Colors.grey
                       ),)
 

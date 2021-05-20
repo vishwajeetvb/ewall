@@ -68,54 +68,53 @@ class _homePageState extends State<homePage> {
                   ),
                   ],
               ),
-                  SizedBox(height: 20,),
-                  Text("Account Overview",style: TextStyle(
+              SizedBox(height: 10,),
+
+              //This Row for Send Money and Send Money Icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Add Account", style: TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w800,
                     fontFamily: 'avenir',
                   ),),
-                  SizedBox(height: 10,),
-                  //This container for that whole white box and icon
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Color(0xfff1f3f6),
+
+                  //Button for Navigating to the next page for sending Money
+                  IconButton(
+                    onPressed: (){
+                      setState(() {
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black87,
+                      size: 35,
                     ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              //This container for that whole white box and icon
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.all(2.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //This Column for that white space to show balance
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("20,600",style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                            ),),
-                            SizedBox(height: 5,),
-                            Text("Current Balance", style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),)
-                          ],
-                        ),
-                        //This column for that icon
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xffffac30),
+                        children: [
+                          Container(
+                            child: addAccount(15000,'Paytm Payments Bank'),
                           ),
-                          child: Icon(
-                            Icons.add,
-                            size: 30,
+                          Container(
+                            child: addAccount(2000,'Kotak Mahindra Bank'),
                           ),
-                        )
-                      ],
-                    ),
+                          Container(
+                            child: addAccount(5989,'Axis Bank'),
+                          ),
+                        ],
+                      ),
                   ),
                   SizedBox(height: 10,),
 
@@ -207,6 +206,68 @@ class _homePageState extends State<homePage> {
     );
   }
 
+  Container addAccount(var money,String bankName){
+    return Container(
+            margin: EdgeInsets.only(right: 30),
+            height: 120,
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              color: Color(0xfff1f3f6),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(30),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Color(0xfff1f3f6),
+                  ),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //This Column for that white space to show balance
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('$money',style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                            ),),
+                            SizedBox(height: 5,),
+                            Text('$bankName', style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),)
+                          ],
+                        ),
+                        SizedBox(width: 20,),
+                        //This column for that icon
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xffffac30),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 30,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+    );
+
+  }
+
   //Our serviceWidget
   Column serviceWidget(String img, String name){
        return Column(
@@ -249,8 +310,8 @@ class _homePageState extends State<homePage> {
   Container avatarWidget(String img, String name){
     return Container(
       margin: EdgeInsets.only(right: 10),
-      height: 150,
-      width: 130,
+      height: 130,
+      width: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(15)),
         color: Color(0xfff1f3f6),
@@ -259,8 +320,8 @@ class _homePageState extends State<homePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            height: 60,
-            width: 60,
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
@@ -275,9 +336,9 @@ class _homePageState extends State<homePage> {
             ),
           ),
           Text(name, style: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontFamily: 'avenir',
-            fontWeight: FontWeight.w700
+            fontWeight: FontWeight.w800
           ),)
         ],
       ),

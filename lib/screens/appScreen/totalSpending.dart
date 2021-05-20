@@ -65,8 +65,32 @@ class _TotalSpendingState extends State<TotalSpending> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: myChart1Items('My Total Spending', '1000', '%15 over'),
-
+      body: Container(
+        child: Column(
+          children : [
+            Column(
+              children: [
+                Container(
+                child: Text('Hello'),
+              )]
+            ),
+            SizedBox(height: 10,),
+            Column(
+                children: [
+                  Text('Graph')
+                ]
+            ),
+            SizedBox(height: 25,),
+            Column(
+                children : [
+                  Container(
+                    child: myChart1Items('My Total Spending', '1000', '%15 Over'),
+                  ),
+                ]
+            )
+            ]
+      )
+      ),
     );
   }
 }
