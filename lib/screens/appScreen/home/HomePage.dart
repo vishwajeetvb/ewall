@@ -1,5 +1,6 @@
 
 import 'package:ewall/screens/appScreen/home/SendMoney.dart';
+import 'package:ewall/screens/appScreen/home/internalFile/filePicker.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +175,7 @@ class _homePageState extends State<homePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Services', style: TextStyle(
+                      Text('Upload Statement', style: TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.w800,
                         fontFamily: 'avenir',
@@ -186,19 +187,8 @@ class _homePageState extends State<homePage> {
                       )
                     ],
                   ),
-                  Expanded(
-                      child: GridView.count(crossAxisCount: 4,
-                      childAspectRatio: 0.7,
-                        children: [
-                          serviceWidget("sendMoney","Send\nMoney"),
-                          serviceWidget("receiveMoney","Receive\nMoney"),
-                          serviceWidget("phone","Mobile\nRecharge"),
-                          serviceWidget("electricity","Electricity\nBill"),
-                          serviceWidget("tag","Cashback\nOffer"),
-                          serviceWidget("flight","Flight\nTicket"),
-                          serviceWidget("more","More\n"),
-                        ],
-                      ))
+                  SizedBox(height: 10,),
+                  FilePickr()
                 ],
           ),
         ),
