@@ -1,9 +1,10 @@
 import 'package:ewall/screens/appScreen/home/SendMoney.dart';
+import 'package:ewall/screens/appScreen/home/models/Transactions.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -32,6 +33,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   String _chosenCategory;
   bool kindOfTransaction = false;
   bool transactionClass = false;
+  List txn;
+
+  @override
+  void initState() {
+    txn = getTransactions();
+    super.initState();
+  }
 
   Future<void> addTransactions(BuildContext context) async {
     return await showDialog(
@@ -210,7 +218,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
                             alignment: Alignment.center,
                             child: Text(
-                              "Gradient Button",
+                              "Add Transactions",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 15),
                             ),
@@ -227,10 +235,73 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         });
   }
 
-
   //Main Logic of Home Page
   @override
   Widget build(BuildContext context) {
+
+    ListTile makeListTile(Transactions lesson) => ListTile(
+      contentPadding:
+      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      leading: Container(
+        padding: EdgeInsets.only(right: 12.0),
+        decoration: new BoxDecoration(
+            border: new Border(
+                right: new BorderSide(width: 1.0, color: Colors.white24))),
+        child: Icon(Icons.autorenew, color: Colors.white),
+      ),
+      title: Text(
+        lesson.amount.toString(),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+      subtitle: Row(
+        children: <Widget>[
+          Expanded(
+              flex: 1,
+              child: Container(
+                // tag: 'hero',
+                child: LinearProgressIndicator(
+                    backgroundColor: Color.fromRGBO(209, 224, 224, 0.2),
+                    value: lesson.amount.toDouble(),
+                    valueColor: AlwaysStoppedAnimation(Colors.green)),
+              )),
+          Expanded(
+            flex: 4,
+            child: Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Text(lesson.category,
+                    style: TextStyle(color: Colors.white))),
+          )
+        ],
+      ),
+      trailing:
+      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+      onTap: () {},
+    );
+
+    Card makeCard(Transactions lesson) => Card(
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        child: makeListTile(lesson),
+      ),
+    );
+
+    final makeBody = Container(
+      // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: txn.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeCard(txn[index]);
+        },
+      ),
+    );
+
+
     //This Scaffold for next screen after clicking on sign in
     return Scaffold(
       drawer: SideDrawer(),
@@ -416,6 +487,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xfff1f3f6),
                       ),
+                      child: makeBody,
                     )
                   ],
                 ),
@@ -428,7 +500,38 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   }
 
-
+  List getTransactions(){
+    return[
+      Transactions(
+          amount: 1000,
+          dateTime: DateFormat.yMd('en_US').parse('1/10/2012'),
+          category: 'Entertainment',
+          kindOfTransaction: 'Income',
+          transactionClass: 'Assets'
+      ),
+      Transactions(
+          amount: 1050,
+          dateTime: DateFormat.yMd('en_US').parse('5/12/2021'),
+          category: 'Housing',
+          kindOfTransaction: 'Expense',
+          transactionClass: 'Liabilities'
+      ),
+      Transactions(
+          amount: 1000,
+          dateTime: DateFormat.yMd('en_US').parse('1/10/2012'),
+          category: 'Entertainment',
+          kindOfTransaction: 'Income',
+          transactionClass: 'Assets'
+      ),
+      Transactions(
+          amount: 1050,
+          dateTime: DateFormat.yMd('en_US').parse('5/12/2021'),
+          category: 'Housing',
+          kindOfTransaction: 'Expense',
+          transactionClass: 'Liabilities'
+      ),
+    ];
+  }
 
   Container addAccount(var money, String bankName) {
     return Container(
@@ -540,3 +643,4 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     );
   }
 }
+
