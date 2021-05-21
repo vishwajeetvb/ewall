@@ -241,20 +241,23 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
     ListTile makeListTile(Transactions lesson) => ListTile(
       contentPadding:
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      //Container For The Icon
       leading: Container(
         padding: EdgeInsets.only(right: 12.0),
         decoration: new BoxDecoration(
-            border: new Border(
-                right: new BorderSide(width: 1.0, color: Colors.white24))),
+            borderRadius: BorderRadius.circular(20)
+            ),
         child: Icon(Icons.autorenew, color: Colors.white),
       ),
+      //This title to Show Amount
       title: Text(
         lesson.amount.toString(),
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
+
+      //This is to show the Entertainment Row
       subtitle: Row(
         children: <Widget>[
           Expanded(
@@ -281,16 +284,25 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     );
 
     Card makeCard(Transactions lesson) => Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 15.0,
+      margin: new EdgeInsets.fromLTRB(10,10,10,0),
       child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xffFFD169),Color(0xffEA6700)],
+          ),
+
+          borderRadius: BorderRadius.circular(20)
+        ),
         child: makeListTile(lesson),
       ),
     );
 
     final makeBody = Container(
-      // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
