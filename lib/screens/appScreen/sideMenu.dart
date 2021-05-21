@@ -1,7 +1,8 @@
-import 'package:ewall/screens/appScreen/expense_dashboard.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/expense_dashboard.dart';
+import 'package:ewall/screens/appScreen/transactions/upload_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home/HomePage.dart';
+import 'home/home_page.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({Key key}) : super(key: key);
@@ -37,6 +38,11 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()))},
+          ),
+          ListTile(
+            leading: Icon(Icons.upload_file),
+            title: Text('Upload Transactions'),
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => UploadTransactions()))},
           ),
           ListTile(
             leading: Icon(Icons.monetization_on_sharp),

@@ -1,5 +1,5 @@
 
-import 'package:ewall/screens/appScreen/home/HomePage.dart';
+import 'package:ewall/screens/appScreen/home/home_page.dart';
 
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _IntroScreenState extends State<IntroScreen> {
       if (user == null) {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
       } else {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => homePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage()));
       }
     });
   }

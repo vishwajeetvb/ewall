@@ -2,7 +2,7 @@
 import 'dart:ui';
 
 import 'package:ewall/screens/appScreen/sideMenu.dart';
-import 'package:ewall/screens/appScreen/totalSpending.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/totalSpending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

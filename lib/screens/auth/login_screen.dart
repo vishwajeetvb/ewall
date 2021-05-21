@@ -1,5 +1,5 @@
 
-import 'package:ewall/screens/appScreen/home/HomePage.dart';
+import 'package:ewall/screens/appScreen/home/home_page.dart';
 
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
        //If its verified pop up & say login successfull & redirect to home screen
        showDialog(
          context: context,
-         builder: (BuildContext context) => _buildPopupDialog(context,"Success","Login Successfull",'Let\'s Go',homePage.routeName),
+         builder: (BuildContext context) => _buildPopupDialog(context,"Success","Login Successfull",'Let\'s Go',Homepage.routeName),
        );
      }
      }

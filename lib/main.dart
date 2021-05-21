@@ -1,4 +1,4 @@
-import 'package:ewall/screens/appScreen/home/HomePage.dart';
+import 'package:ewall/screens/appScreen/home/home_page.dart';
 
 import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: IntroScreen(),
       //These routes to set particular screen by calling their router Name
       routes: {
-        homePage.routeName: (context) => homePage(),
+        Homepage.routeName: (context) => Homepage(),
         LoginScreen.routeName: (context) => LoginScreen(),
         SignupScreen.routeName: (context) => SignupScreen(),
       },

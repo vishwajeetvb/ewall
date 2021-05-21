@@ -89,7 +89,7 @@ class FilePickrState extends State<FilePickr> {
 
   loadCsvFromStorage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['csv','xlsx'],
+      allowedExtensions: ['.csv'],
       type: FileType.custom
     );
     String path = result.files.first.path;

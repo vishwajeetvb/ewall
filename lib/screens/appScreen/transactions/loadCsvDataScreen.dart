@@ -24,28 +24,20 @@ class LoadCsvDataScreen extends StatelessWidget {
               ? Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              children: snapshot.data
-                  .map(
+              children: snapshot.data.map(
                     (data) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        data[0].toString(),
-                      ),
-                      Text(
-                        data[1].toString(),
-                      ),
-                      Text(
-                        data[2].toString(),
-                      ),
+                      Text(data[0].toString(),),
+                      Text(data[1].toString(),),
+                      Text(data[2].toString(),),
                     ],
                   ),
                 ),
-              )
-                  .toList(),
+              ).toList(),
             ),
           )
               : Center(
