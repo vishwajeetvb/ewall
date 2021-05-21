@@ -46,57 +46,84 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              insetPadding: EdgeInsets.all(5),
-              title: Text('Stateful Dialog'),
-              content: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  home: DefaultTabController(
-                    length: 2,
-                    child: Scaffold(
-
-                      appBar: AppBar(
-                        bottom: TabBar(
-                            tabs: <Widget>[
-                                Tab(
-                                  child :Text('Income',style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w800
-                                  ),),
-                                ),
-                                Tab(
-                                  child :Text('Spending',style: TextStyle(fontSize: 16,
-                                      fontWeight: FontWeight.w800
-                                  ),),
-                                ),
-                              ]
+              insetPadding: EdgeInsets.all(15),
+              content: Container(
+                width: double.minPositive,
+                child: Container(
+                  width: double.minPositive,
+                  height: 150,
+                  child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: DefaultTabController(
+                        length: 2,
+                        child: Scaffold(
+                          appBar: PreferredSize(
+                            preferredSize: Size.fromHeight(48),
+                            child: AppBar(
+                              backgroundColor: Colors.orange,
+                              bottom: TabBar(
+                                  tabs: <Widget>[
+                                      Tab(
+                                        child :Text('Income',style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800
+                                        ),),
+                                      ),
+                                      Tab(
+                                        child :Text('Spending',style: TextStyle(fontSize: 16,
+                                            fontWeight: FontWeight.w800
+                                        ),),
+                                      ),
+                                    ]
+                              ),
+                            ),
+                          ),
+                          body: TabBarView(
+                            children: <Widget>[
+                              Center(
+                                child: Text("Income"),
+                              ),
+                              Center(
+                                child: Text("Settings"),
+                              )
+                            ],
+                            controller: _tabController,
+                          ),
                         ),
                       ),
-                      body: TabBarView(
-                        children: <Widget>[
-                          Center(
-                            child: Text("Income"),
-                          ),
-                          Center(
-                            child: Text("Settings"),
-                          )
-                        ],
-                        controller: _tabController,
+                      color: Colors.white,
+                    ),
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.orangeAccent
+                      ),
+                      child : InkWell(
+                        child: Text('Close'),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
                     ),
-                  ),
-                  color: Colors.white,
-                ),
+                    
+                    SizedBox(width: 250,),
+                    InkWell(
+                      child: Text('OK'),
+                      onTap: () {
+                        if (_formKey.currentState.validate()) {
+                          // Do something like updating SharedPreferences or User Settings etc.
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  ],
+                )
 
-              actions: <Widget>[
-                InkWell(
-                  child: Text('OK   '),
-                  onTap: () {
-                    if (_formKey.currentState.validate()) {
-                      // Do something like updating SharedPreferences or User Settings etc.
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
               ],
             );
           });
