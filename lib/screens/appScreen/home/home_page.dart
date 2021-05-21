@@ -2,6 +2,8 @@ import 'package:ewall/screens/appScreen/home/SendMoney.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+
 
 class HomePage extends StatelessWidget {
   @override
@@ -23,103 +25,198 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
-  TabController _tabController;
+  final dateController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
+  String _chosenCategory;
+  bool kindOfTransaction = false;
+  bool transactionClass = false;
 
   Future<void> addTransactions(BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (context) {
-          bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              insetPadding: EdgeInsets.all(15),
-              content: Container(
-                width: double.minPositive,
+              shape: RoundedRectangleBorder(borderRadius:
+              BorderRadius.all(Radius.circular(30))),
+
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
                 child: Container(
-                  width: double.minPositive,
-                  height: 150,
-                  child: MaterialApp(
-                      debugShowCheckedModeBanner: false,
-                      home: DefaultTabController(
-                        length: 2,
-                        child: Scaffold(
-                          appBar: PreferredSize(
-                            preferredSize: Size.fromHeight(48),
-                            child: AppBar(
-                              backgroundColor: Colors.orange,
-                              bottom: TabBar(
-                                  tabs: <Widget>[
-                                      Tab(
-                                        child :Text('Income',style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w800
-                                        ),),
-                                      ),
-                                      Tab(
-                                        child :Text('Spending',style: TextStyle(fontSize: 16,
-                                            fontWeight: FontWeight.w800
-                                        ),),
-                                      ),
-                                    ]
-                              ),
-                            ),
-                          ),
-                          body: TabBarView(
-                            children: <Widget>[
-                              Center(
-                                child: Text("Income"),
-                              ),
-                              Center(
-                                child: Text("Settings"),
-                              )
-                            ],
-                            controller: _tabController,
-                          ),
-                        ),
-                      ),
-                      color: Colors.white,
-                    ),
+                  height: 411,
+                   child: Form(
+                     key: _formKey,
+                     child: Column(
+                       children: [
+                         //TextFormField For Amount
+                         TextFormField(
+                           controller: _amountController,
+                           cursorColor: Colors.orange,
+                           decoration: InputDecoration(
+                             labelText: "Enter Transaction Amount",
+                             border: new OutlineInputBorder(
+                               borderRadius: new BorderRadius.circular(25.0),
+                             ),
+                           ),
+                           // The validator receives the text that the user has entered.
+                           validator: (value) {
+                             if (value == null || value.isEmpty) {
+                               return 'Please enter Amount';
+                             }
+                             return null;
+                           },
+                         ),
+                         SizedBox(height: 10,),
+                         //This Container for choosing category of Transaction such assets, liabilities
+                         Container(
+                           decoration: BoxDecoration(
+                             border: Border.all(
+                               color: Colors.orange.shade600
+                             ),
+                             borderRadius: BorderRadius.circular(20)
+                           ),
+                           padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
+                           child: DropdownButton<String>(
+                             value: _chosenCategory,
+                             elevation: 5,
+                             style: TextStyle(color: Color(0xffEA6700)),
+
+                             items: <String>[
+                               'Entertainment',
+                               'Food & Drinks',
+                               'Housing',
+                               'Transportation',
+                               'Vehicle',
+                               'Investments',
+                               'Income',
+                               'Insurance',
+                               'Others'
+                             ].map<DropdownMenuItem<String>>((String value) {
+                               return DropdownMenuItem<String>(
+                                 value: value,
+                                 child: Text(value),
+                               );
+                             }).toList(),
+                             hint: Text(
+                               "Choose Category",
+                               style: TextStyle(
+                                   color: Colors.orangeAccent,
+                                   fontSize: 16,
+                                   fontWeight: FontWeight.w600),
+                             ),
+                             onChanged: (String value) {
+                               setState(() {
+                                 _chosenCategory = value;
+                               });
+                             },
+                           ),
+                         ),
+                         SizedBox(height: 15,),
+                         //This Container for Date Picking
+                         Container(
+                           child: TextField(
+                           readOnly: true,
+                           controller: dateController,
+                           decoration: InputDecoration(
+                               hintText: 'Pick Your Transaction Date',
+                               border: new OutlineInputBorder(
+                               borderRadius: new BorderRadius.circular(25.0),
+                             )
+
+                           ),
+                           onTap: () async {
+                             var date =  await showDatePicker(
+                                 context: context,
+                                 initialDate:DateTime.now(),
+                                 firstDate:DateTime(1900),
+                                 lastDate: DateTime(2100));
+                             dateController.text = date.toString().substring(0,10);
+                           },)),
+                         SizedBox(height: 5,),
+                         //This is For Choosing Transaction Kind as Income/Expense
+                         Padding(
+                           padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                           child: Text('Select Kind of Transaction ',
+                               style:
+                               TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+                         ),
+                         ToggleSwitch(
+                             minWidth: 110.0,
+                             cornerRadius: 20,
+                             activeBgColor: Colors.orange,
+                             inactiveBgColor: Colors.white,
+                             labels: ['Income', 'Expense'],
+                             onToggle: (index) {
+                               if(index==0){
+                                  kindOfTransaction=false;
+                               }else{
+                                 kindOfTransaction=true;
+                               }
+                             }),
+                         SizedBox(height: 5,),
+                         //This is for Choosing Transaction Class For Graph
+                         Padding(
+                           padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                           child: Text('Select Transaction Class ',
+                               style:
+                               TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+                         ),
+                         ToggleSwitch(
+                             minWidth: 110.0,
+                             cornerRadius: 20,
+                             activeBgColor: Colors.orange,
+                             inactiveBgColor: Colors.white,
+                             labels: ['Assets', 'Liabilities'],
+                             onToggle: (index) {
+                               if(index==0){
+                                  transactionClass=false;
+                               }else{
+                                 transactionClass=true;
+                               }
+                             }),
+                       ],
+                     ),
+                   ),
                 ),
               ),
               actions: <Widget>[
                 Row(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.orangeAccent
-                      ),
-                      child : InkWell(
-                        child: Text('Close'),
-                        onTap: () {
-                          Navigator.of(context).pop();
+                      height: 50.0,
+                      margin: EdgeInsets.all(6),
+                      child: RaisedButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            // Do something like updating SharedPreferences or User Settings etc.
+                            Navigator.of(context).pop();
+                          }
                         },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFFD169), Color(0xffEA6700)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints:
+                            BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Gradient Button",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    
-                    SizedBox(width: 250,),
-                    InkWell(
-                      child: Text('OK'),
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {
-                          // Do something like updating SharedPreferences or User Settings etc.
-                          Navigator.of(context).pop();
-                        }
-                      },
                     ),
                   ],
                 )
@@ -287,6 +384,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
+                    //To Conthe alert dialoug boxtrol height of
                     height: 60,
                     width: 60,
                     child: IconButton(
