@@ -1,3 +1,4 @@
+
 import 'package:ewall/screens/appScreen/home/SendMoney.dart';
 import 'package:ewall/screens/appScreen/home/models/Transactions.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
@@ -5,188 +6,296 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_field/date_field.dart';
 
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Homepage(),
-    );
-  }
-}
-
-class Homepage extends StatefulWidget  {
+class Homepage extends StatefulWidget {
   static const routeName = '/home';
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  CollectionReference ref =
+      FirebaseFirestore.instance.collection("Transactions");
 
-  final TextEditingController _amountController = TextEditingController();
-
-  final dateController = TextEditingController();
-
+  TextEditingController _transactionTitleController;
+  TextEditingController _amountController;
+  DateTime selectedData;
   String _chosenCategory;
   bool kindOfTransaction = false;
   bool transactionClass = false;
-  List txn;
+
+  static int bnkamt = 1500;
 
   @override
   void initState() {
-    txn = getTransactions();
     super.initState();
+    _transactionTitleController = TextEditingController();
+    _amountController = TextEditingController();
   }
 
+  void addMoney() {
+    setState(() {
+      bnkamt++;
+    });
+  }
+
+  //Function To Add Transaction To List
+  void addTransactionsToList() {
+    setState(() {
+      Transactions tn = new Transactions();
+      if (kindOfTransaction) {
+        tn.kindOfTransaction = "Income";
+      } else {
+        tn.kindOfTransaction = "Expense";
+      }
+      if (transactionClass) {
+        tn.transactionClass = "Assets";
+      } else {
+        tn.transactionClass = "Liabilities";
+      }
+      Map<String, dynamic> txn = {
+        'TransactionTitle': (_transactionTitleController.text),
+        'TransactionAmount': (int.parse(_amountController.text)),
+        'TransactionCategory': (_chosenCategory.toString()),
+        'TransactionDate': selectedData,
+        'KindOfTransaction': tn.kindOfTransaction,
+        'TransactionClass': tn.transactionClass,
+      };
+      ref.add(txn);
+    });
+  }
+
+  //Function to Dynamically change the icons based on Transaction Type
+  Icon runtimeIcon(String category) {
+    if (category == 'Entertainment') {
+      return Icon(
+        Icons.live_tv,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Food & Drinks') {
+      return Icon(
+        Icons.fastfood,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Housing') {
+      return Icon(
+        Icons.house_outlined,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Transportation') {
+      return Icon(
+        Icons.emoji_transportation_outlined,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Investments') {
+      return Icon(
+        Icons.book_outlined,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Salary') {
+      return Icon(
+        Icons.money,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'Insurance') {
+      return Icon(
+        Icons.medical_services_outlined,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else {
+      return Icon(
+        Icons.category_rounded,
+        color: Colors.white,
+        size: 40.00,
+      );
+    }
+  }
+
+  //Function For Showing add transaction Dialoge
   Future<void> addTransactions(BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius:
-              BorderRadius.all(Radius.circular(30))),
-
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
               content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  height: 411,
-                   child: Form(
-                     key: _formKey,
-                     child: Column(
-                       children: [
-                         //TextFormField For Amount
-                         TextFormField(
-                           controller: _amountController,
-                           cursorColor: Colors.orange,
-                           decoration: InputDecoration(
-                             labelText: "Enter Transaction Amount",
-                             border: new OutlineInputBorder(
-                               borderRadius: new BorderRadius.circular(25.0),
-                             ),
-                           ),
-                           // The validator receives the text that the user has entered.
-                           validator: (value) {
-                             if (value == null || value.isEmpty) {
-                               return 'Please enter Amount';
-                             }
-                             return null;
-                           },
-                         ),
-                         SizedBox(height: 10,),
-                         //This Container for choosing category of Transaction such assets, liabilities
-                         Container(
-                           decoration: BoxDecoration(
-                             border: Border.all(
-                               color: Colors.orange.shade600
-                             ),
-                             borderRadius: BorderRadius.circular(20)
-                           ),
-                           padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
-                           child: DropdownButton<String>(
-                             value: _chosenCategory,
-                             elevation: 5,
-                             style: TextStyle(color: Color(0xffEA6700)),
+                  height: 502,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        //TextFormField For TransactionName
+                        TextFormField(
+                          controller: _transactionTitleController,
+                          cursorColor: Colors.orange,
+                          decoration: InputDecoration(
+                            labelText: "Enter Transaction Name",
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                          ),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter A Title For Transaction';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
 
-                             items: <String>[
-                               'Entertainment',
-                               'Food & Drinks',
-                               'Housing',
-                               'Transportation',
-                               'Vehicle',
-                               'Investments',
-                               'Income',
-                               'Insurance',
-                               'Others'
-                             ].map<DropdownMenuItem<String>>((String value) {
-                               return DropdownMenuItem<String>(
-                                 value: value,
-                                 child: Text(value),
-                               );
-                             }).toList(),
-                             hint: Text(
-                               "Choose Category",
-                               style: TextStyle(
-                                   color: Colors.orangeAccent,
-                                   fontSize: 16,
-                                   fontWeight: FontWeight.w600),
-                             ),
-                             onChanged: (String value) {
-                               setState(() {
-                                 _chosenCategory = value;
-                               });
-                             },
-                           ),
-                         ),
-                         SizedBox(height: 15,),
-                         //This Container for Date Picking
-                         Container(
-                           child: TextField(
-                           readOnly: true,
-                           controller: dateController,
-                           decoration: InputDecoration(
-                               hintText: 'Pick Your Transaction Date',
-                               border: new OutlineInputBorder(
-                               borderRadius: new BorderRadius.circular(25.0),
-                             )
+                        //TextFormField For Amount
+                        TextFormField(
+                          controller: _amountController,
+                          cursorColor: Colors.orange,
+                          decoration: InputDecoration(
+                            labelText: "Enter Transaction Amount",
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                          ),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Amount';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
 
-                           ),
-                           onTap: () async {
-                             var date =  await showDatePicker(
-                                 context: context,
-                                 initialDate:DateTime.now(),
-                                 firstDate:DateTime(1900),
-                                 lastDate: DateTime(2100));
-                             dateController.text = date.toString().substring(0,10);
-                           },)),
-                         SizedBox(height: 5,),
-                         //This is For Choosing Transaction Kind as Income/Expense
-                         Padding(
-                           padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                           child: Text('Select Kind of Transaction ',
-                               style:
-                               TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-                         ),
-                         ToggleSwitch(
-                             minWidth: 110.0,
-                             cornerRadius: 20,
-                             activeBgColor: Colors.orange,
-                             inactiveBgColor: Colors.white,
-                             labels: ['Income', 'Expense'],
-                             onToggle: (index) {
-                               if(index==0){
-                                  kindOfTransaction=false;
-                               }else{
-                                 kindOfTransaction=true;
-                               }
-                             }),
-                         SizedBox(height: 5,),
-                         //This is for Choosing Transaction Class For Graph
-                         Padding(
-                           padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                           child: Text('Select Transaction Class ',
-                               style:
-                               TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-                         ),
-                         ToggleSwitch(
-                             minWidth: 110.0,
-                             cornerRadius: 20,
-                             activeBgColor: Colors.orange,
-                             inactiveBgColor: Colors.white,
-                             labels: ['Assets', 'Liabilities'],
-                             onToggle: (index) {
-                               if(index==0){
-                                  transactionClass=false;
-                               }else{
-                                 transactionClass=true;
-                               }
-                             }),
-                       ],
-                     ),
-                   ),
+                        //This Container for choosing category of Transaction such assets, liabilities
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.orange.shade600),
+                              borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
+                          child: DropdownButton<String>(
+                            value: _chosenCategory,
+                            elevation: 5,
+                            style: TextStyle(color: Color(0xffEA6700)),
+                            items: <String>[
+                              'Entertainment',
+                              'Food & Drinks',
+                              'Housing',
+                              'Transportation',
+                              'Investments',
+                              'Salary',
+                              'Insurance',
+                              'Others'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Choose Category",
+                              style: TextStyle(
+                                  color: Colors.orangeAccent,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                _chosenCategory = value;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        //This Container for Date Picking
+                        Container(
+                          child: DateTimeFormField(
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(color: Colors.black45),
+                              errorStyle: TextStyle(color: Colors.redAccent),
+                              border: OutlineInputBorder(),
+                              suffixIcon: Icon(Icons.event_note),
+                              labelText: 'Only Date',
+                            ),
+                            mode: DateTimeFieldPickerMode.date,
+                            autovalidateMode: AutovalidateMode.always,
+                            validator: (e) => (e?.day ?? 0) == 1
+                                ? 'Please not the first day'
+                                : null,
+                            onDateSelected: (DateTime value) {
+                              selectedData = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //This is For Choosing Transaction Kind as Income/Expense
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Text('Select Kind of Transaction ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0)),
+                        ),
+                        ToggleSwitch(
+                            minWidth: 110.0,
+                            cornerRadius: 20,
+                            activeBgColor: Colors.orange,
+                            inactiveBgColor: Colors.white,
+                            labels: ['Income', 'Expense'],
+                            onToggle: (index) {
+                              if (index == 0) {
+                                kindOfTransaction = false;
+                              } else {
+                                kindOfTransaction = true;
+                              }
+                            }),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //This is for Choosing Transaction Class For Graph
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Text('Select Transaction Class ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0)),
+                        ),
+                        ToggleSwitch(
+                            minWidth: 110.0,
+                            cornerRadius: 20,
+                            activeBgColor: Colors.orange,
+                            inactiveBgColor: Colors.white,
+                            labels: ['Assets', 'Liabilities'],
+                            onToggle: (index) {
+                              if (index == 0) {
+                                transactionClass = false;
+                              } else {
+                                transactionClass = true;
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               actions: <Widget>[
@@ -198,8 +307,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       child: RaisedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            // Do something like updating SharedPreferences or User Settings etc.
-                            Navigator.of(context).pop();
+                            addTransactionsToList();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Homepage()));
                           }
                         },
                         shape: RoundedRectangleBorder(
@@ -214,13 +327,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               ),
                               borderRadius: BorderRadius.circular(30.0)),
                           child: Container(
-                            constraints:
-                            BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                            constraints: BoxConstraints(
+                                maxWidth: 250.0, minHeight: 50.0),
                             alignment: Alignment.center,
                             child: Text(
                               "Add Transactions",
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 15),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         ),
@@ -228,91 +342,112 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     ),
                   ],
                 )
-
               ],
             );
           });
         });
   }
 
+  //Delete Methods for Deleting Transactions
+  Future<void> deleteTransaction(DocumentSnapshot txndoc) async {
+       await FirebaseFirestore.instance
+          .collection("Transactions").doc(txndoc.id)
+          .delete();
+  }
+
   //Main Logic of Home Page
   @override
   Widget build(BuildContext context) {
 
-    ListTile makeListTile(Transactions lesson) => ListTile(
-      contentPadding:
-      EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      //Container For The Icon
-      leading: Container(
-        padding: EdgeInsets.only(right: 12.0),
-        decoration: new BoxDecoration(
-            borderRadius: BorderRadius.circular(20)
-            ),
-        child: Icon(Icons.autorenew, color: Colors.white),
-      ),
-      //This title to Show Amount
-      title: Text(
-        lesson.amount.toString(),
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-
-
-      //This is to show the Entertainment Row
-      subtitle: Row(
-        children: <Widget>[
-          Expanded(
-              flex: 1,
-              child: Container(
-                // tag: 'hero',
-                child: LinearProgressIndicator(
-                    backgroundColor: Color.fromRGBO(209, 224, 224, 0.2),
-                    value: lesson.amount.toDouble(),
-                    valueColor: AlwaysStoppedAnimation(Colors.green)),
-              )),
-          Expanded(
-            flex: 4,
-            child: Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Text(lesson.category,
-                    style: TextStyle(color: Colors.white))),
-          )
-        ],
-      ),
-      trailing:
-      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-      onTap: () {},
-    );
-
-    Card makeCard(Transactions lesson) => Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      elevation: 15.0,
-      margin: new EdgeInsets.fromLTRB(10,10,10,0),
-      child: Container(
-
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xffFFD169),Color(0xffEA6700)],
+    //Method Returning the card to make the tiles for list view
+    Card makeCard(DocumentSnapshot txndata,String id,String title,String category,var amount,DateTime time){
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
+          elevation: 15.0,
+          margin:
+          new EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xffFFD169),
+                      Color(0xffEA6700)
+                    ],
+                  ),
+                  borderRadius:
+                  BorderRadius.circular(20)),
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 5, vertical: 5),
+                //Container For The Icon
+                leading: Container(
+                    padding:
+                    EdgeInsets.only(right: 0),
+                    decoration: new BoxDecoration(
+                        borderRadius:
+                        BorderRadius.circular(5)),
+                    child: Container(
+                        padding:
+                        EdgeInsets.only(left: 10),
+                        child: runtimeIcon(category))),
+                //This title to Show Amount
+                title: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
 
-          borderRadius: BorderRadius.circular(20)
-        ),
-        child: makeListTile(lesson),
-      ),
-    );
-
-    final makeBody = Container(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: txn.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeCard(txn[index]);
-        },
-      ),
-    );
-
+                //This is to show the Entertainment Row
+                subtitle: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Container(
+                            width: 500,
+                            // tag: 'hero',
+                            child: Text(
+                              "${time.year.toString()}"
+                                  "-${time.month.toString()}"
+                                  "-${time.day.toString().padLeft(2, '0')}",
+                              style: TextStyle(
+                                  color:
+                                  Colors.white),
+                            ))),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Expanded(
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 10.0),
+                          child: Text(
+                              '\u{20B9}${amount.toDouble()}',
+                              style: TextStyle(
+                                  color:
+                                  Colors.white))),
+                    )
+                  ],
+                ),
+                trailing: Container(
+                    padding:
+                    EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        deleteTransaction(txndata);
+                      },
+                      icon: Icon(Icons.edit_outlined,
+                          color: Colors.white,
+                          size: 25.0),
+                    )
+                ),
+              )),
+        );
+    }
 
     //This Scaffold for next screen after clicking on sign in
     return Scaffold(
@@ -414,13 +549,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   //Button for Navigating to the next page for sending Money
                   IconButton(
                     onPressed: () {
-                      setState(() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SendMoney()));
-                      });
+                      addMoney();
                     },
                     icon: Icon(
                       Icons.arrow_forward,
@@ -440,13 +569,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Container(
-                      child: addAccount(15000, 'Paytm Payments Bank'),
+                      child: addAccount(bnkamt, 'Paytm Payments Bank'),
                     ),
                     Container(
-                      child: addAccount(2000, 'Kotak Mahindra Bank'),
+                      child: addAccount(bnkamt, 'Kotak Mahindra Bank'),
                     ),
                     Container(
-                      child: addAccount(5989, 'Axis Bank'),
+                      child: addAccount(bnkamt, 'Axis Bank'),
                     ),
                   ],
                 ),
@@ -472,7 +601,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     width: 60,
                     child: IconButton(
                       onPressed: () async {
-                          await addTransactions(context);
+                        await addTransactions(context);
                       },
                       icon: Icon(
                         Icons.add_circle,
@@ -491,16 +620,41 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 padding: EdgeInsets.all(0.5),
                 child: Row(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                      height: MediaQuery.of(context).size.height*0.3,
-                      width: 294,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Color(0xfff1f3f6),
-                      ),
-                      child: makeBody,
-                    )
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('Transactions')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: Text('No Data Avaliable'),
+                          );
+                        }
+                        return Container(
+                          margin: EdgeInsets.only(right: 5),
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          width: 294,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Color(0xfff1f3f6),
+                          ),
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index){
+                              DocumentSnapshot txndata = snapshot.data.docs[index];
+
+                              return makeCard(txndata, txndata.id,
+                                  txndata['TransactionTitle'], txndata['TransactionCategory'],
+                                  txndata['TransactionAmount'],
+                                  DateTime.fromMicrosecondsSinceEpoch(txndata['TransactionDate'].microsecondsSinceEpoch)
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -509,42 +663,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ),
       ),
     );
-
   }
 
-  List getTransactions(){
-    return[
-      Transactions(
-          amount: 1000,
-          dateTime: DateFormat.yMd('en_US').parse('1/10/2012'),
-          category: 'Entertainment',
-          kindOfTransaction: 'Income',
-          transactionClass: 'Assets'
-      ),
-      Transactions(
-          amount: 1050,
-          dateTime: DateFormat.yMd('en_US').parse('5/12/2021'),
-          category: 'Housing',
-          kindOfTransaction: 'Expense',
-          transactionClass: 'Liabilities'
-      ),
-      Transactions(
-          amount: 1000,
-          dateTime: DateFormat.yMd('en_US').parse('1/10/2012'),
-          category: 'Entertainment',
-          kindOfTransaction: 'Income',
-          transactionClass: 'Assets'
-      ),
-      Transactions(
-          amount: 1050,
-          dateTime: DateFormat.yMd('en_US').parse('5/12/2021'),
-          category: 'Housing',
-          kindOfTransaction: 'Expense',
-          transactionClass: 'Liabilities'
-      ),
-    ];
-  }
-
+  //This Widget To Add Account
   Container addAccount(var money, String bankName) {
     return Container(
       margin: EdgeInsets.only(right: 30),
@@ -602,9 +723,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       shape: BoxShape.circle,
                       color: Color(0xffffac30),
                     ),
-                    child: Icon(
-                      Icons.add,
-                      size: 30,
+                    child: IconButton(
+                      onPressed: addMoney,
+                      icon: Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
                     ),
                   )
                 ],
@@ -655,4 +779,3 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     );
   }
 }
-

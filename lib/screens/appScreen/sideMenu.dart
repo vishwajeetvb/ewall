@@ -37,7 +37,7 @@ class _SideDrawerState extends State<SideDrawer> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()))},
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage()))},
           ),
           ListTile(
             leading: Icon(Icons.upload_file),
