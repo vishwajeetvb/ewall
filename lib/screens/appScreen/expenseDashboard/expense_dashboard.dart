@@ -47,8 +47,6 @@ class _ExpenseDashBoardState extends State<ExpenseDashBoard> with TickerProvider
     _tabController.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -69,7 +67,8 @@ class _ExpenseDashBoardState extends State<ExpenseDashBoard> with TickerProvider
                 child :Text('Spending',style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800
-                ),),
+                ),
+                ),
               ),
               Tab(
                 child :Text('Assets',style: TextStyle(

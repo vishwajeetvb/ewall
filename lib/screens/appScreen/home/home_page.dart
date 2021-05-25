@@ -435,14 +435,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 ),
                 trailing: Container(
                     padding:
-                    EdgeInsets.only(right: 10),
+                    EdgeInsets.only(right: 0),
                     child: IconButton(
                       onPressed: () {
                         deleteTransaction(txndata);
                       },
-                      icon: Icon(Icons.edit_outlined,
+                      icon: Icon(Icons.delete_forever_outlined,
                           color: Colors.white,
-                          size: 25.0),
+                          size: 30.0),
                     )
                 ),
               )),
