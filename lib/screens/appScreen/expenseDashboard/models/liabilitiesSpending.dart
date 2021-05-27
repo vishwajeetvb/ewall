@@ -1,4 +1,6 @@
 
+import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
+
 import '../classes/SpendingData.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -40,37 +42,6 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
 
   }
 
-  Card myChartItems(){
-    return Card(
-      color: Colors.orange,
-      child: Column(
-          children: [
-            //Initialize the chart widget
-            SfCartesianChart(
-                primaryXAxis: DateTimeAxis(),
-                // Chart title
-                title: ChartTitle(text: 'Your Total Spending Graph'),
-                // Enable legend
-                legend: Legend(isVisible: true),
-                // Enable tooltip
-                tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries>[
-                  LineSeries<SpendingData, DateTime>(
-                      name: "TotalSpending",
-                      dataSource: liabilitiesdata,
-                      xValueMapper: (SpendingData data, _) => data.date,
-                      yValueMapper: (SpendingData data, _) => data.totalAmount,
-                      // Enable data label
-                      dataLabelSettings: DataLabelSettings(isVisible: true))
-                ]
-            ),
-          ]
-      ),
-    );
-
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +56,7 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
                       Container(
                         color: Colors.purple,
                         height: 310,
-                        child: myChartItems(),
+                        child: LineChart(data: liabilitiesdata),
                       ),
                     ]
                 )

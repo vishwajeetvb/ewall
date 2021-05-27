@@ -1,4 +1,6 @@
 
+import 'package:ewall/screens/appScreen/expenseDashboard/models/CircularChart.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../classes/SpendingData.dart';
@@ -20,7 +22,6 @@ class _TotalSpendingState extends State<TotalSpending> {
 
   List<SpendingData> data = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -39,62 +40,40 @@ class _TotalSpendingState extends State<TotalSpending> {
         setState(() {
           data.add(tsd);
         });
-        print("Date: "+DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
-            +" Amount is "+element['TransactionAmount'].toString());
       }
       );});
-
-  }
-
-  Card myChartItems(){
-    return Card(
-      color: Colors.orange,
-      child: Column(
-                children: [
-              //Initialize the chart widget
-              SfCartesianChart(
-                  primaryXAxis: DateTimeAxis(),
-                  // Chart title
-                  title: ChartTitle(text: 'Your Total Spending Graph'),
-                  // Enable legend
-                  legend: Legend(isVisible: true),
-                  // Enable tooltip
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <ChartSeries>[
-                    LineSeries<SpendingData,DateTime>(
-                        dataSource: data,
-                        xValueMapper: (SpendingData data, _) => data.date,
-                        yValueMapper: (SpendingData data, _) => data.totalAmount,
-                    ),
-                  ]
-              ),
-            ]
-      ),
-    );
-
 
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children : [
-            SizedBox(height: 25,),
-            Column(
-                children : [
-                  Text("Your Date-Wise Expense"),
-                  SizedBox(height: 10,),
-                  Container(
-                    color: Colors.purple,
-                    height: 310,
-                    child: myChartItems(),
-                  ),
-                ]
-            )
-            ]
-      )
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          child: Column(
+            children : [
+              SizedBox(height: 25,),
+              Column(
+                  children : [
+                    Text("Your Date-Wise Expense"),
+                    SizedBox(height: 10,),
+                    Container(
+                      color: Colors.purple,
+                      height: 310,
+                      child: LineChart(data: data),
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      color: Colors.purple,
+                      height: 308,
+                      child: CircularChart(),
+                    ),
+                  ]
+              )
+              ]
+        )
+        ),
       ),
     );
   }
