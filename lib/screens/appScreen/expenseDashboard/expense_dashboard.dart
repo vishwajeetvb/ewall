@@ -1,8 +1,10 @@
 
 import 'dart:ui';
 
+import 'package:ewall/screens/appScreen/expenseDashboard/models/assetsSpending.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/models/liabilitiesSpending.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
-import 'package:ewall/screens/appScreen/expenseDashboard/totalSpending.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/models/totalSpending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -87,12 +89,8 @@ class _ExpenseDashBoardState extends State<ExpenseDashBoard> with TickerProvider
       body: TabBarView(
         children: <Widget>[
           TotalSpending(),
-          Center(
-            child: Text("Email"),
-          ),
-          Center(
-            child: Text("Settings"),
-          )
+          AssetsSpending(),
+          LiabilitiesSpending(),
         ],
         controller: _tabController,
       ),

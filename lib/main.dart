@@ -12,7 +12,7 @@ So await which need async */
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(new MaterialApp(home: new Scaffold(body: new MyApp())));
 }
 
 /*

@@ -27,19 +27,29 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   bool kindOfTransaction = false;
   bool transactionClass = false;
 
-  static int bnkamt = 1500;
+  static double amountInAccount = 0;
 
   @override
   void initState() {
     super.initState();
     _transactionTitleController = TextEditingController();
     _amountController = TextEditingController();
+    getAmountInAccount();
   }
 
-  void addMoney() {
-    setState(() {
-      bnkamt++;
-    });
+  void getAmountInAccount(){
+    amountInAccount=0;
+    var collectionReference = FirebaseFirestore.instance.collection('Transactions');
+    var query = collectionReference.where('TransactionAmount',isGreaterThanOrEqualTo: 0);
+    query.get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        setState(() {
+          amountInAccount+=element['TransactionAmount'];
+        });
+      }
+      );
+      }
+      );
   }
 
   //Function To Add Transaction To List
@@ -56,6 +66,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       } else {
         tn.transactionClass = "Liabilities";
       }
+      amountInAccount+=double.tryParse(_amountController.text);
       Map<String, dynamic> txn = {
         'TransactionTitle': (_transactionTitleController.text),
         'TransactionAmount': (int.parse(_amountController.text)),
@@ -121,7 +132,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     }
   }
 
-  //Function For Showing add transaction Dialoge
+  //Function For Showing add transaction Dialogue
   Future<void> addTransactions(BuildContext context) async {
     return await showDialog(
         context: context,
@@ -235,7 +246,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               suffixIcon: Icon(Icons.event_note),
                               labelText: 'Only Date',
                             ),
-                            mode: DateTimeFieldPickerMode.date,
+                            mode: DateTimeFieldPickerMode.dateAndTime,
                             autovalidateMode: AutovalidateMode.always,
                             validator: (e) => (e?.day ?? 0) == 1
                                 ? 'Please not the first day'
@@ -350,9 +361,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   //Delete Methods for Deleting Transactions
   Future<void> deleteTransaction(DocumentSnapshot txndoc) async {
-       await FirebaseFirestore.instance
+    setState(() {
+      FirebaseFirestore.instance
           .collection("Transactions").doc(txndoc.id)
           .delete();
+      getAmountInAccount();
+    });
   }
 
   //Main Logic of Home Page
@@ -538,23 +552,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Add Account",
+                    "Your Account",
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.w800,
                       fontFamily: 'avenir',
-                    ),
-                  ),
-
-                  //Button for Navigating to the next page for sending Money
-                  IconButton(
-                    onPressed: () {
-                      addMoney();
-                    },
-                    icon: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black87,
-                      size: 35,
                     ),
                   ),
                 ],
@@ -569,13 +571,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Container(
-                      child: addAccount(bnkamt, 'Paytm Payments Bank'),
-                    ),
-                    Container(
-                      child: addAccount(bnkamt, 'Kotak Mahindra Bank'),
-                    ),
-                    Container(
-                      child: addAccount(bnkamt, 'Axis Bank'),
+                      child: addAccount(amountInAccount, 'Paytm Payments Bank'),
                     ),
                   ],
                 ),
@@ -644,7 +640,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index){
                               DocumentSnapshot txndata = snapshot.data.docs[index];
-
                               return makeCard(txndata, txndata.id,
                                   txndata['TransactionTitle'], txndata['TransactionCategory'],
                                   txndata['TransactionAmount'],
@@ -724,7 +719,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       color: Color(0xffffac30),
                     ),
                     child: IconButton(
-                      onPressed: addMoney,
+                      onPressed: () async {
+                        await addTransactions(context);
+                      },
                       icon: Icon(
                         Icons.add,
                         size: 30,
