@@ -30,10 +30,10 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   TextEditingController _uamountController = TextEditingController();
   DateTime uselectedData ;
   String _uchosenCategory;
-  bool ukindOfTransaction = false;
+  bool ukindOfTransaction ;
   int labelkot;
   int labelutc;
-  bool utransactionClass = false;
+  bool utransactionClass;
 
   static double amountInAccount = 0;
 
@@ -64,12 +64,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   void addTransactionsToList() {
     setState(() {
       Transactions tn = new Transactions();
-      if (kindOfTransaction) {
+      if (kindOfTransaction==false) {
         tn.kindOfTransaction = "Income";
       } else {
         tn.kindOfTransaction = "Expense";
       }
-      if (transactionClass) {
+      if (transactionClass==false) {
         tn.transactionClass = "Assets";
       } else {
         tn.transactionClass = "Liabilities";
@@ -379,6 +379,31 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   Future<void> updateTransaction(DocumentSnapshot txndoc) async {
     setState(() {
+      String kot;
+      String tc;
+
+      if(ukindOfTransaction==null){
+        kot=txndoc['KindOfTransaction'];
+      }
+      else if(ukindOfTransaction==false){
+        kot="Income";
+      }else{
+        kot="Expense";
+      }
+
+      if(utransactionClass==null){
+        tc=txndoc['TransactionClass'];
+      }
+      else if(utransactionClass==false){
+        tc="Assets";
+      }else{
+        tc="Liabilities";
+      }
+
+      print("kindot"+ukindOfTransaction.toString()+"tranc"+utransactionClass.toString());
+      print("kindot"+kot+"tranc"+tc);
+
+
       FirebaseFirestore.instance
           .collection("Transactions").doc(txndoc.id)
           .update(
@@ -387,12 +412,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           'TransactionAmount': (int.parse(_uamountController.text)),
           'TransactionCategory': (_uchosenCategory.toString()),
           'TransactionDate': uselectedData,
-          'KindOfTransaction': ukindOfTransaction,
-          'TransactionClass': utransactionClass,}
+          'KindOfTransaction': kot,
+          'TransactionClass': tc,}
       );
     });
   }
-
   void getupdateControllerValue(BuildContext context,DocumentSnapshot txndoc){
     _utransactionTitleController.text=txndoc['TransactionTitle'].toString();
     _uamountController.text=txndoc['TransactionAmount'].toString();
@@ -410,7 +434,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     }
     updateTransactionsForm(context,txndoc);
   }
-
   Future<void> updateTransactionsForm(BuildContext context,DocumentSnapshot txndoc) async {
     return await showDialog(
         context: context,
@@ -640,6 +663,127 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         });
   }
 
+  Future<void> viewTransactions(BuildContext context,DocumentSnapshot txndoc)  async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  height: 502,
+                  child:
+                    Column(
+                      children: [
+
+                        Row(
+                          children: [
+                            Container(
+                              height: 50.0,
+                              margin: EdgeInsets.all(6),
+                              child: RaisedButton(
+                                onPressed: () async{
+                                    await deleteTransaction(txndoc);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                Homepage()));
+                                    },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [Color(0xffFFD169), Color(0xffEA6700)],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  child: Container(
+                                    margin: EdgeInsets.all(3),
+                                    constraints: BoxConstraints(
+                                        maxWidth: MediaQuery.of(context).size.width*0.59, minHeight: 50.0),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 10,),
+                                        Text(
+                                          "Transaction Details",
+                                          textAlign: TextAlign.center,
+                                          style:
+                                          TextStyle(color: Colors.white, fontSize: 15),
+                                        ),
+                                        SizedBox(width: 20),
+                                        IconButton(
+                                            onPressed: () {
+
+                                            },
+                                            icon: Icon(Icons.delete)
+                                        )
+                                      ]
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+
+                       ],
+                    ),
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Container(
+                      height: 50.0,
+                      margin: EdgeInsets.all(6),
+                      child: RaisedButton(
+                        onPressed: () {
+                          getupdateControllerValue(context, txndoc);
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFFD169), Color(0xffEA6700)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 250.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Update Transactions",
+                              textAlign: TextAlign.center,
+                              style:
+                              TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            );
+          });
+        });
+  }
+
   //Main Logic of Home Page
   @override
   Widget build(BuildContext context) {
@@ -722,7 +866,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   width: 40,
                     child: IconButton(
                       onPressed: () async {
-                        await getupdateControllerValue(context,txndata);
+                        await viewTransactions(context,txndata);
                       },
                       icon: Icon(Icons.arrow_forward_ios,
                           color: Colors.white,
