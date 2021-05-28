@@ -1,6 +1,5 @@
-
-import 'package:ewall/screens/appScreen/home/SendMoney.dart';
-import 'package:ewall/screens/appScreen/home/models/Transactions.dart';
+import 'package:ewall/screens/appScreen/home/models/SendMoney.dart';
+import 'package:ewall/screens/appScreen/home/classes/Transactions.dart';
 import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +25,15 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   String _chosenCategory;
   bool kindOfTransaction = false;
   bool transactionClass = false;
+
+  TextEditingController _utransactionTitleController = TextEditingController();
+  TextEditingController _uamountController = TextEditingController();
+  DateTime uselectedData ;
+  String _uchosenCategory;
+  bool ukindOfTransaction = false;
+  int labelkot;
+  int labelutc;
+  bool utransactionClass = false;
 
   static double amountInAccount = 0;
 
@@ -369,6 +377,269 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     });
   }
 
+  Future<void> updateTransaction(DocumentSnapshot txndoc) async {
+    setState(() {
+      FirebaseFirestore.instance
+          .collection("Transactions").doc(txndoc.id)
+          .update(
+        {
+          'TransactionTitle': (_utransactionTitleController.text),
+          'TransactionAmount': (int.parse(_uamountController.text)),
+          'TransactionCategory': (_uchosenCategory.toString()),
+          'TransactionDate': uselectedData,
+          'KindOfTransaction': ukindOfTransaction,
+          'TransactionClass': utransactionClass,}
+      );
+    });
+  }
+
+  void getupdateControllerValue(BuildContext context,DocumentSnapshot txndoc){
+    _utransactionTitleController.text=txndoc['TransactionTitle'].toString();
+    _uamountController.text=txndoc['TransactionAmount'].toString();
+    uselectedData=DateTime.fromMicrosecondsSinceEpoch(txndoc['TransactionDate'].microsecondsSinceEpoch);
+    _uchosenCategory=txndoc['TransactionCategory'];
+    if(txndoc['KindOfTransaction']=="Income"){
+      labelkot=0;
+    }else{
+      labelkot=1;
+    }
+    if(txndoc['TransactionClass']=="Assets"){
+      labelutc=0;
+    }else{
+      labelutc=1;
+    }
+    updateTransactionsForm(context,txndoc);
+  }
+
+  Future<void> updateTransactionsForm(BuildContext context,DocumentSnapshot txndoc) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  height: 502,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        //TextFormField For TransactionName
+                        TextFormField(
+                          controller: _utransactionTitleController,
+                          cursorColor: Colors.orange,
+                          decoration: InputDecoration(
+                            labelText: "Enter Transaction Name",
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                          ),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter A Title For Transaction';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        //TextFormField For Amount
+                        TextFormField(
+                          controller: _uamountController,
+                          cursorColor: Colors.orange,
+                          decoration: InputDecoration(
+                            labelText: "Enter Transaction Amount",
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                          ),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Amount';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        //This Container for choosing category of Transaction such assets, liabilities
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.orange.shade600),
+                              borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
+                          child: DropdownButton<String>(
+                            value: _uchosenCategory,
+                            elevation: 5,
+                            style: TextStyle(color: Color(0xffEA6700)),
+                            items: <String>[
+                              'Entertainment',
+                              'Food & Drinks',
+                              'Housing',
+                              'Transportation',
+                              'Investments',
+                              'Salary',
+                              'Insurance',
+                              'Others'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Choose Category",
+                              style: TextStyle(
+                                  color: Colors.orangeAccent,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                _uchosenCategory = value;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        //This Container for Date Picking
+                        Container(
+                          child: DateTimeFormField(
+                            initialValue: uselectedData,
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(color: Colors.black45),
+                              errorStyle: TextStyle(color: Colors.redAccent),
+                              border: OutlineInputBorder(),
+                              suffixIcon: Icon(Icons.event_note),
+                              labelText: 'Only Date',
+                            ),
+                            mode: DateTimeFieldPickerMode.dateAndTime,
+                            autovalidateMode: AutovalidateMode.always,
+                            validator: (e) => (e?.day ?? 0) == 1
+                                ? 'Please not the first day'
+                                : null,
+                            onDateSelected: (DateTime value) {
+                              uselectedData = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //This is For Choosing Transaction Kind as Income/Expense
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Text('Select Kind of Transaction ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0)),
+                        ),
+                        ToggleSwitch(
+                          initialLabelIndex: labelkot,
+                            minWidth: 110.0,
+                            cornerRadius: 20,
+                            activeBgColor: Colors.orange,
+                            inactiveBgColor: Colors.white,
+                            labels: ['Income', 'Expense'],
+                            onToggle: (index) {
+                              if (index == 0) {
+                                ukindOfTransaction = false;
+                              } else {
+                                ukindOfTransaction = true;
+                              }
+                            }),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //This is for Choosing Transaction Class For Graph
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Text('Select Transaction Class ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0)),
+                        ),
+                        ToggleSwitch(
+                          initialLabelIndex: labelutc,
+                            minWidth: 110.0,
+                            cornerRadius: 20,
+                            activeBgColor: Colors.orange,
+                            inactiveBgColor: Colors.white,
+                            labels: ['Assets', 'Liabilities'],
+                            onToggle: (index) {
+                              if (index == 0) {
+                                utransactionClass = false;
+                              } else {
+                                utransactionClass = true;
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Container(
+                      height: 50.0,
+                      margin: EdgeInsets.all(6),
+                      child: RaisedButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            updateTransaction(txndoc);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Homepage()));
+                          }
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFFD169), Color(0xffEA6700)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 250.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Update Transactions",
+                              textAlign: TextAlign.center,
+                              style:
+                              TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            );
+          });
+        });
+  }
+
   //Main Logic of Home Page
   @override
   Widget build(BuildContext context) {
@@ -376,10 +647,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     //Method Returning the card to make the tiles for list view
     Card makeCard(DocumentSnapshot txndata,String id,String title,String category,var amount,DateTime time){
         return Card(
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          elevation: 15.0,
+          elevation: 5,
           margin:
           new EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: Container(
@@ -387,18 +659,17 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   gradient: LinearGradient(
                     colors: [
                       Color(0xffFFD169),
-                      Color(0xffEA6700)
+                      Color(0xffEA6700),
                     ],
                   ),
                   borderRadius:
                   BorderRadius.circular(20)),
               child: ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    horizontal: 5, vertical: 5),
+                    horizontal: 3, vertical: 7),
                 //Container For The Icon
                 leading: Container(
-                    padding:
-                    EdgeInsets.only(right: 0),
+
                     decoration: new BoxDecoration(
                         borderRadius:
                         BorderRadius.circular(5)),
@@ -448,13 +719,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ],
                 ),
                 trailing: Container(
-                    padding:
-                    EdgeInsets.only(right: 0),
+                  width: 40,
                     child: IconButton(
-                      onPressed: () {
-                        deleteTransaction(txndata);
+                      onPressed: () async {
+                        await getupdateControllerValue(context,txndata);
                       },
-                      icon: Icon(Icons.delete_forever_outlined,
+                      icon: Icon(Icons.arrow_forward_ios,
                           color: Colors.white,
                           size: 30.0),
                     )
@@ -513,6 +783,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               SizedBox(
                 height: 20,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -571,7 +842,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Container(
-                      child: addAccount(amountInAccount, 'Paytm Payments Bank'),
+                      child: addAccount(amountInAccount, 'Your Expense Amount'),
                     ),
                   ],
                 ),
@@ -613,7 +884,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                padding: EdgeInsets.all(0.5),
+                padding: EdgeInsets.all(0),
                 child: Row(
                   children: [
                     StreamBuilder(
@@ -628,12 +899,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           );
                         }
                         return Container(
-                          margin: EdgeInsets.only(right: 5),
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          width: 294,
+                          height: MediaQuery.of(context).size.height * 0.35,
+                          width: MediaQuery.of(context).size.width * 0.83,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xfff1f3f6),
+                            //color: Color(0xfff1f3f6),
                           ),
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,
@@ -661,7 +931,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   //This Widget To Add Account
-  Container addAccount(var money, String bankName) {
+  Container addAccount(var money, String textName) {
     return Container(
       margin: EdgeInsets.only(right: 30),
       height: 120,
@@ -691,7 +961,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       Text(
                         '$money',
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 23,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -699,10 +969,10 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         height: 5,
                       ),
                       Text(
-                        '$bankName',
+                        '$textName',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                         ),
                       )
                     ],

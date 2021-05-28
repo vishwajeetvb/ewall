@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'categoriesData.dart';
+import '../classes/categoriesData.dart';
 
 class CircularChart extends StatefulWidget {
   const CircularChart({Key key}) : super(key: key);
