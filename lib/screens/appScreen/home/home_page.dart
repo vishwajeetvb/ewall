@@ -119,7 +119,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Salary') {
+    } else if (category == 'Income') {
       return Icon(
         Icons.money,
         color: Colors.white,
@@ -217,7 +217,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               'Housing',
                               'Transportation',
                               'Investments',
-                              'Salary',
+                              'Income',
                               'Insurance',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
@@ -510,7 +510,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               'Housing',
                               'Transportation',
                               'Investments',
-                              'Salary',
+                              'Income',
                               'Insurance',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {

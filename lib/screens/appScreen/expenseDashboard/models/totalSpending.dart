@@ -138,7 +138,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     }
     );
 
-    var query6 = collectionReference.where('TransactionCategory',isEqualTo:"Salary");
+    var query6 = collectionReference.where('TransactionCategory',isEqualTo:"Income");
     query6.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -148,7 +148,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Salary',((amount/TotalAmount)*100).toInt(),Colors.deepPurple));
+        others.add(CircularData('Income',((amount/TotalAmount)*100).toInt(),Colors.brown));
       });
 
     }
