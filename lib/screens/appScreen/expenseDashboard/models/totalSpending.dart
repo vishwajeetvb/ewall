@@ -28,10 +28,7 @@ class _TotalSpendingState extends State<TotalSpending> {
   void initState() {
     super.initState();
     getTSGraphData();
-    print("This is list"+others.toString());
     getCCGraphData();
-    print("This is list"+others.toString());
-
   }
 
   void getTSGraphData(){
@@ -200,16 +197,20 @@ class _TotalSpendingState extends State<TotalSpending> {
               SizedBox(height: 25,),
               Column(
                   children : [
-                    Text("Your Date-Wise Expense"),
+                    Text("Your Date-Wise Expense",style: TextStyle(
+                      fontSize: 18
+                    ),),
                     SizedBox(height: 10,),
                     Container(
-                      color: Colors.purple,
                       height: 310,
                       child: LineChart(data: data),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 20,),
+                    Text("Category Wise Expense Percentage",style: TextStyle(
+                        fontSize: 18
+                    ),),
+                    SizedBox(height: 20,),
                     Container(
-                      color: Colors.purple,
                       height: 308,
                       child: CircularChart(data : others),
                     ),

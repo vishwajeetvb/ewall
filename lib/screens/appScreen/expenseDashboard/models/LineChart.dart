@@ -27,7 +27,7 @@ class _LineChartState extends State<LineChart> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.orange,
+      //00color: Colors.white,
       child: Column(
           children: [
             //Initialize the chart widget
@@ -37,7 +37,7 @@ class _LineChartState extends State<LineChart> {
                 ),
                 zoomPanBehavior: _zoomPanBehavior,
                 // Chart title
-                title: ChartTitle(text: 'Your Total Spending Graph'),
+                title: ChartTitle(text: 'Spending Graph'),
                 // Enable tooltip
                 tooltipBehavior: TooltipBehavior(enable: true),
 

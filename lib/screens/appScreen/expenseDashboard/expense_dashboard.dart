@@ -15,10 +15,10 @@ class ExpenseManagement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       debugShowCheckedModeBanner: false,
       home: ExpenseDashBoard(title: 'Expense DashBoard'),
       theme: ThemeData(
+        brightness: Brightness.dark,
         primaryColor: Colors.orange
       ),
     );

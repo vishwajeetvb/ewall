@@ -48,13 +48,14 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
       body: Container(
           child: Column(
               children : [
-                SizedBox(height: 25,),
                 Column(
                     children : [
-                      Text("Your Asset Data"),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 20,),
+                      Text("This is Your Liabilities Spending Data",style: TextStyle(
+                        fontSize: 18
+                      ),),
+                      SizedBox(height: 20,),
                       Container(
-                        color: Colors.purple,
                         height: 310,
                         child: LineChart(data: liabilitiesdata),
                       ),

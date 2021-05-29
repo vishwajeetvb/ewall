@@ -20,7 +20,7 @@ class _CircularChartState extends State<CircularChart> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.orange,
+      //color: Colors.white,
       child: Column(
           children: [
             //Initialize the chart widget
