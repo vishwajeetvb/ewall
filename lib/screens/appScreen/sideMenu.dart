@@ -1,5 +1,6 @@
+import 'package:ewall/screens/appScreen/cryptoScreen/cryptoDashboard.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/expense_dashboard.dart';
-import 'package:ewall/screens/appScreen/transactions/upload_transactions.dart';
+import 'package:ewall/screens/appScreen/uploadTransactions/upload_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home/home_page.dart';
@@ -43,6 +44,11 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: Icon(Icons.upload_file),
             title: Text('Upload Transactions'),
             onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => UploadTransactions()))},
+          ),
+          ListTile(
+            leading: Icon(Icons.upload_file),
+            title: Text('Crypto Dashboard'),
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CryptoDashBoard()))},
           ),
           ListTile(
             leading: Icon(Icons.monetization_on_sharp),

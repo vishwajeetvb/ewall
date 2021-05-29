@@ -1,11 +1,14 @@
 
+import 'package:ewall/screens/appScreen/expenseDashboard/classes/SpendingData.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/classes/circularData.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../classes/categoriesData.dart';
 
 class CircularChart extends StatefulWidget {
-  const CircularChart({Key key}) : super(key: key);
+  List<CircularData> data;
+  CircularChart({Key key,this.data}) : super(key: key);
 
   @override
   _CircularChartState createState() => _CircularChartState();
@@ -13,12 +16,6 @@ class CircularChart extends StatefulWidget {
 
 class _CircularChartState extends State<CircularChart> {
 
-  List<ChartData> chartData = [
-    ChartData('David', 25),
-    ChartData('Steve', 38),
-    ChartData('Jack', 34),
-    ChartData('Others', 52)
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +28,11 @@ class _CircularChartState extends State<CircularChart> {
               legend: Legend(isVisible: true),
                 series: <CircularSeries>[
                   // Render pie chart
-                  PieSeries<ChartData, String>(
-                      dataSource: chartData,
-                      pointColorMapper:(ChartData data,  _) => data.color,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y,
+                  PieSeries<CircularData, String>(
+                      dataSource: widget.data,
+                      pointColorMapper:(CircularData data,  _) => data.color,
+                      xValueMapper: (CircularData data, _) => data.TransactionName,
+                      yValueMapper: (CircularData data, _) => data.amount,
                     radius: '80%',
                     explode: true,
                     dataLabelSettings: DataLabelSettings(

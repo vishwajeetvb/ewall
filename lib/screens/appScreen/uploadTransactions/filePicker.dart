@@ -56,7 +56,7 @@ class FilePickrState extends State<FilePickr> {
                   height: 50,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                   onPressed: () {
-                    generateCsv();
+
                   },
                   color: Colors.orangeAccent,
                   child: Text("Load Uploaded csv"),
@@ -69,27 +69,10 @@ class FilePickrState extends State<FilePickr> {
     );
   }
 
-  generateCsv() async {
-    List<List<String>> data = [
-      ["No.", "Name", "Roll No."],
-      ["1", randomAlpha(3), randomNumeric(3)],
-      ["2", randomAlpha(3), randomNumeric(3)],
-      ["3", randomAlpha(3), randomNumeric(3)]
-    ];
-    String csvData = ListToCsvConverter().convert(data);
-    final String directory = (await getApplicationSupportDirectory()).path;
-    final path = "$directory/csv-${DateTime.now()}.csv";
-    print(path);
-    final File file = File(path);
-    await file.writeAsString(csvData);
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {return LoadCsvDataScreen(path: path);},
-    ),
-    );
-  }
 
   loadCsvFromStorage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['.csv'],
+      allowedExtensions: ['.xlsx'],
       type: FileType.custom
     );
     String path = result.files.first.path;

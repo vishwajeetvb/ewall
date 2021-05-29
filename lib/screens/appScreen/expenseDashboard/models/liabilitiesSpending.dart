@@ -1,10 +1,9 @@
-
-import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
-
 import '../classes/SpendingData.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'LineChart.dart';
 
 class LiabilitiesSpending extends StatefulWidget {
   const LiabilitiesSpending({Key key}) : super(key: key);
@@ -16,6 +15,7 @@ class LiabilitiesSpending extends StatefulWidget {
 class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
 
   List<SpendingData> liabilitiesdata = [];
+
 
   @override
   void initState() {
