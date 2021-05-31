@@ -7,17 +7,23 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_field/date_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'classes/User.dart';
 
 class Homepage extends StatefulWidget {
   static const routeName = '/home';
+  Homepage({Key key,this.user}) : super(key: key);
+  User user;
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CollectionReference ref =
-      FirebaseFirestore.instance.collection("Transactions");
+
+  CurrentUser currentUser;
 
   TextEditingController _transactionTitleController;
   TextEditingController _amountController;
@@ -34,7 +40,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   int labelkot;
   int labelutc;
   bool utransactionClass;
-
   static double amountInAccount = 0;
 
   @override
@@ -47,7 +52,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   void getAmountInAccount(){
     amountInAccount=0;
-    var collectionReference = FirebaseFirestore.instance.collection('Transactions');
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
+        .collection('Transaction');
     var query = collectionReference.where('TransactionAmount',isGreaterThanOrEqualTo: 0);
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
@@ -83,7 +89,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         'KindOfTransaction': tn.kindOfTransaction,
         'TransactionClass': tn.transactionClass,
       };
-      ref.add(txn);
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid).collection("Transaction").add(txn);
     });
   }
 
@@ -331,7 +337,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        Homepage()));
+                                        Homepage(user: widget.user,)));
                           }
                         },
                         shape: RoundedRectangleBorder(
@@ -370,8 +376,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   //Delete Methods for Deleting Transactions
   Future<void> deleteTransaction(DocumentSnapshot txndoc) async {
     setState(() {
-      FirebaseFirestore.instance
-          .collection("Transactions").doc(txndoc.id)
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
+          .collection("Transaction").doc(txndoc.id)
           .delete();
       getAmountInAccount();
     });
@@ -404,8 +410,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       print("kindot"+kot+"tranc"+tc);
 
 
-      FirebaseFirestore.instance
-          .collection("Transactions").doc(txndoc.id)
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
+          .collection("Transaction").doc(txndoc.id)
           .update(
         {
           'TransactionTitle': (_utransactionTitleController.text),
@@ -879,7 +885,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
     //This Scaffold for next screen after clicking on sign in
     return Scaffold(
-      drawer: SideDrawer(),
+      drawer: SideDrawer(user:widget.user),
       appBar: AppBar(
         title: Text('TransManager'),
         backgroundColor: Color(0xffffac30),
@@ -1032,8 +1038,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('Transactions')
+                      stream: FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
+                          .collection('Transaction')
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {

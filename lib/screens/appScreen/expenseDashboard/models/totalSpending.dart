@@ -3,23 +3,20 @@ import 'package:ewall/screens/appScreen/expenseDashboard/classes/circularData.da
 import 'package:ewall/screens/appScreen/expenseDashboard/models/CircularChart.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../classes/SpendingData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
 class TotalSpending extends StatefulWidget {
-  const TotalSpending({Key key}) : super(key: key);
+  final String uid;
+  const TotalSpending({Key key,this.uid}) : super(key: key);
 
   @override
   _TotalSpendingState createState() => _TotalSpendingState();
 }
 
 class _TotalSpendingState extends State<TotalSpending> {
-
-  //Here we make a reference to our collection Transactions
-  CollectionReference users = FirebaseFirestore.instance.collection('Transactions');
 
   List<SpendingData> data = [];
   List<CircularData> others = [];
@@ -33,13 +30,16 @@ class _TotalSpendingState extends State<TotalSpending> {
 
   void getTSGraphData(){
 
-    var collectionReference = FirebaseFirestore.instance.collection('Transactions').orderBy('TransactionDate');
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid).
+        collection('Transaction').orderBy('TransactionDate');
     collectionReference.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         SpendingData tsd = SpendingData(
             DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch)
             ,element['TransactionAmount'].toDouble()
         );
+        print(DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
+            +element['TransactionAmount'].toDouble().toString());
         setState(() {
           data.add(tsd);
         });
@@ -49,7 +49,8 @@ class _TotalSpendingState extends State<TotalSpending> {
   }
 
   void getCCGraphData(){
-    var collectionReference = FirebaseFirestore.instance.collection('Transactions');
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid)
+        .collection('Transaction');
     double TotalAmount=0;
     collectionReference.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
@@ -60,7 +61,6 @@ class _TotalSpendingState extends State<TotalSpending> {
       );
     }
     );
-    print("Total $TotalAmount");
 
 
     var query1 = collectionReference.where('TransactionCategory',isEqualTo:"Entertainment");

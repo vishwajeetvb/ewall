@@ -6,7 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'LineChart.dart';
 
 class LiabilitiesSpending extends StatefulWidget {
-  const LiabilitiesSpending({Key key}) : super(key: key);
+  final String uid;
+  const LiabilitiesSpending({Key key,this.uid}) : super(key: key);
 
   @override
   _LiabilitiesSpendingState createState() => _LiabilitiesSpendingState();
@@ -24,7 +25,8 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
   }
 
   void getTSGraphData(){
-    var collectionReference = FirebaseFirestore.instance.collection('Transactions').orderBy('TransactionDate');
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid)
+        .collection('Transaction').orderBy('TransactionDate');
     var query = collectionReference.where('TransactionClass',isEqualTo:"Liabilities");
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
@@ -35,8 +37,6 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
         setState(() {
           liabilitiesdata.add(tsd);
         });
-        print("Date: "+DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
-            +" Amount is "+element['TransactionAmount'].toString());
       }
       );});
 

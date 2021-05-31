@@ -31,9 +31,9 @@ class MyApp extends StatelessWidget {
       home: IntroScreen(),
       //These routes to set particular screen by calling their router Name
       routes: {
-        Homepage.routeName: (context) => Homepage(),
-        LoginScreen.routeName: (context) => LoginScreen(),
-        SignupScreen.routeName: (context) => SignupScreen(),
+        '/home': (BuildContext context) => Homepage(),
+        '/login': (BuildContext context) => LoginPage(),
+        '/register': (BuildContext context) => RegisterPage(),
       },
     );
   }

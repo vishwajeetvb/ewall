@@ -1,198 +1,175 @@
-
-import 'package:flutter/cupertino.dart';
+import 'package:ewall/screens/appScreen/home/home_page.dart';
+import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SignupScreen extends StatefulWidget {
 
-  static const routeName = '/signup';
-
-  const SignupScreen({Key key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _RegisterPageState extends State<RegisterPage> {
+  final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
+  TextEditingController firstNameInputController;
+  TextEditingController lastNameInputController;
+  TextEditingController emailInputController;
+  TextEditingController pwdInputController;
+  TextEditingController confirmPwdInputController;
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
-  TextEditingController _confirmPasswordController = new TextEditingController();
-  User user = FirebaseAuth.instance.currentUser;
-
-  //Logic of Register Button
-  _submit() async {
-    try {
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text)
-      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen())))
-      ;
-    } on FirebaseAuthException catch  (e) {
-      if (e.code == 'weak-password') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Password Provided is too-weak",'Try Again',SignupScreen.routeName),
-        );
-      } else if (e.code == 'email-already-in-use') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => _buildPopupDialog(context,"Error","Account Already Exists for That Email",'Try Again',SignupScreen.routeName),
-        );
-      }
-    }
-
+  @override
+  initState() {
+    firstNameInputController = new TextEditingController();
+    lastNameInputController = new TextEditingController();
+    emailInputController = new TextEditingController();
+    pwdInputController = new TextEditingController();
+    confirmPwdInputController = new TextEditingController();
+    super.initState();
   }
 
-  //Main Widget Logic of SignUp Page
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
+
+  String pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: AppBar(
-        title: Text('SignUp Screen'),
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[
-                Text('Login'),
-                Icon(Icons.person)
-              ],
-            ),
-            textColor: Colors.white,
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-            },
-          )
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Colors.limeAccent,
-                      Colors.red
-                    ]
-                )
-            ),
-          ),
-          Center(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Container(
-                height: 300,
-                width: 300,
-                padding: EdgeInsets.all(16),
+        appBar: AppBar(
+          title: Text("Register"),
+        ),
+        body: Container(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
                 child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        //Email
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(labelText: 'Email'),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value)
-                          {
-                            if(value.isEmpty || !value.contains('@')){
-                              return 'Invalid Email';
+                  key: _registerFormKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'First Name*', hintText: "John"),
+                        controller: firstNameInputController,
+                        validator: (value) {
+                          if (value.length < 3) {
+                            return ("Please enter a valid first name.");
+                          }
+                        },
+                      ),
+                      TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Last Name*', hintText: "Doe"),
+                          controller: lastNameInputController,
+                          validator: (value) {
+                            if (value.length < 3) {
+                              return "Please enter a valid last name.";
                             }
-                            return null;
-                          },
-                          onSaved: (value){
-
-                          },
-                        ),
-                        //Password Field
-                        TextFormField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(labelText: 'Password'),
-                          obscureText: true,
-                          validator: (value){
-                            if(value.isEmpty){
-                              return 'Invalid Password';
+                          }),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                        controller: emailInputController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: emailValidator,
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Password*', hintText: "********"),
+                        controller: pwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Confirm Password*', hintText: "********"),
+                        controller: confirmPwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
+                      ),
+                      RaisedButton(
+                        child: Text("Register"),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          if (_registerFormKey.currentState.validate()) {
+                            if (pwdInputController.text ==
+                                confirmPwdInputController.text) {
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                  email: emailInputController.text,
+                                  password: pwdInputController.text)
+                                  .then((currentUser) => FirebaseFirestore.instance
+                                  .collection("Users")
+                                  .doc(currentUser.user.uid)
+                                  .set({
+                                "uid": currentUser.user.uid,
+                                "firstname": firstNameInputController.text,
+                                "lastname": lastNameInputController.text,
+                                "email": emailInputController.text,
+                              })
+                                  .then((result) => {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Homepage(
+                                          user: currentUser.user)),
+                                        (_) => false),
+                                firstNameInputController.clear(),
+                                lastNameInputController.clear(),
+                                emailInputController.clear(),
+                                pwdInputController.clear(),
+                                confirmPwdInputController.clear()
+                              })
+                                  .catchError((err) => print(err)))
+                                  .catchError((err) => print(err));
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text("The passwords do not match"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Close"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  });
                             }
-                            return null;
-                          },
-                          onSaved: (value){
-
-                          },
-                        ),
-                        //Confirm Password
-                        TextFormField(
-                          decoration: InputDecoration(labelText: 'Confirm Password'),
-                          obscureText: true,
-                          validator: (value){
-                            if(value.isEmpty || value!=_passwordController.text){
-                              return 'Invalid Password';
-                            }
-                            return null;
-                          },
-                          onSaved: (value){
-
-                          },
-                        ),
-                        SizedBox(height: 30,),
-                        //Button For Submission
-                        RaisedButton(
-                          child: Text('Submit'),
-                          onPressed: (){
-                            _submit();
-                          },
-                          shape : RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          color : Colors.blue,
-                          textColor: Colors.white,
-                        ),
-                      ],
-                    ),
+                          }
+                        },
+                      ),
+                      Text("Already have an account?"),
+                      FlatButton(
+                        child: Text("Login here!"),
+                        onPressed: () {
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => LoginPage()),
+                          );
+                        },
+                      )
+                    ],
                   ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-
-    );
+                ))));
   }
 }
-
-//PopUp Method logic
-Widget _buildPopupDialog(BuildContext context,String header,String text,String buttonText,[var routeName]) {
-  return new AlertDialog(
-    //Title Text
-    title: Text(header),
-
-    //Column used for that text display on popup
-    content: new Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //Text which we need to display on Screen
-        Text(text),
-      ],
-    ),
-
-    //Action widget what to do when pressed Button
-    actions: <Widget>[
-      new FlatButton(
-        onPressed: () {
-          //Navigate user to Specified routePage passed in parameter
-          Navigator.of(context).pushReplacementNamed(routeName);
-        },
-        textColor: Theme.of(context).primaryColor,
-        child: Text(buttonText),
-      ),
-    ],
-  );
-}
-

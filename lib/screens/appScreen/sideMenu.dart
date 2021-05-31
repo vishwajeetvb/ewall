@@ -1,12 +1,12 @@
-import 'package:ewall/screens/appScreen/cryptoScreen/cryptoDashboard.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/expense_dashboard.dart';
-import 'package:ewall/screens/appScreen/uploadTransactions/upload_transactions.dart';
+import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home/home_page.dart';
 
 class SideDrawer extends StatefulWidget {
-  const SideDrawer({Key key}) : super(key: key);
+  final User user;
+  const SideDrawer({Key key,this.user}) : super(key: key);
 
   @override
   _SideDrawerState createState() => _SideDrawerState();
@@ -16,6 +16,11 @@ class _SideDrawerState extends State<SideDrawer> {
 
   void _logout() async{
     await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => IntroScreen()),
+            (_) => false);
   }
 
   @override
@@ -38,22 +43,12 @@ class _SideDrawerState extends State<SideDrawer> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage()))},
-          ),
-          ListTile(
-            leading: Icon(Icons.upload_file),
-            title: Text('Upload Transactions'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => UploadTransactions()))},
-          ),
-          ListTile(
-            leading: Icon(Icons.upload_file),
-            title: Text('Crypto Dashboard'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CryptoDashBoard()))},
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage(user: widget.user,)))},
           ),
           ListTile(
             leading: Icon(Icons.monetization_on_sharp),
             title: Text('Expense Dashboard'),
-            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ExpenseManagement()))},
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ExpenseManagement(user: widget.user,)))},
           ),
           ListTile(
             leading: Icon(Icons.border_color),

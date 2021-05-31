@@ -7,18 +7,19 @@ import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/models/totalSpending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class ExpenseManagement extends StatelessWidget {
-  const ExpenseManagement({Key key}) : super(key: key);
+  final User user;
+  const ExpenseManagement({Key key,this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ExpenseDashBoard(title: 'Expense DashBoard'),
+      home: ExpenseDashBoard(user: user,),
       theme: ThemeData(
-        brightness: Brightness.dark,
         primaryColor: Colors.orange
       ),
     );
@@ -27,8 +28,10 @@ class ExpenseManagement extends StatelessWidget {
 
 
 class ExpenseDashBoard extends StatefulWidget {
-  ExpenseDashBoard({Key key, this.title}) : super(key: key);
-  final String title;
+  final User user;
+  ExpenseDashBoard({Key key, this.user}) : super(key: key);
+  //final String title;
+
   @override
   _ExpenseDashBoardState createState() => _ExpenseDashBoardState();
 }
@@ -53,7 +56,7 @@ class _ExpenseDashBoardState extends State<ExpenseDashBoard> with TickerProvider
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      drawer: SideDrawer(),
+      drawer: SideDrawer(user: widget.user),
        appBar: AppBar(
          title: Text('Expense Dashboard'),
        ),
@@ -88,9 +91,9 @@ class _ExpenseDashBoardState extends State<ExpenseDashBoard> with TickerProvider
       ),
       body: TabBarView(
         children: <Widget>[
-          TotalSpending(),
-          AssetsSpending(),
-          LiabilitiesSpending(),
+          TotalSpending(uid:widget.user.uid),
+          AssetsSpending(uid:widget.user.uid),
+          LiabilitiesSpending(uid:widget.user.uid),
         ],
         controller: _tabController,
       ),

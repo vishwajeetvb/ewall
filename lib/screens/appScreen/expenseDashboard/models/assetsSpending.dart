@@ -7,7 +7,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AssetsSpending extends StatefulWidget {
-  const AssetsSpending({Key key}) : super(key: key);
+  final String uid;
+  const AssetsSpending({Key key,this.uid}) : super(key: key);
 
   @override
   _AssetsSpendingState createState() => _AssetsSpendingState();
@@ -25,7 +26,8 @@ class _AssetsSpendingState extends State<AssetsSpending> {
   }
 
   void getTSGraphData(){
-    var collectionReference = FirebaseFirestore.instance.collection('Transactions').orderBy('TransactionDate');
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid).
+    collection('Transaction').orderBy('TransactionDate');
     var query = collectionReference.where('TransactionClass',isEqualTo:"Assets");
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
@@ -36,8 +38,6 @@ class _AssetsSpendingState extends State<AssetsSpending> {
         setState(() {
           assetdata.add(tsd);
         });
-        print("Date: "+DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
-            +" Amount is "+element['TransactionAmount'].toString());
       }
       );});
 

@@ -23,9 +23,9 @@ class _IntroScreenState extends State<IntroScreen> {
         .authStateChanges()
         .listen((User user) {
       if (user == null) {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignupScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => RegisterPage()));
       } else {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage()));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage(user: user)));
       }
     });
   }
