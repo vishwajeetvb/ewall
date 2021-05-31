@@ -72,34 +72,37 @@ class _SendMoneyState extends State<SendMoney> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Send Money'),
-      ),
-      body: Center(
-        child: Container(
-          //height: MediaQuery.of(context).size.height*0.15,
-          child: Column(
-            children: [
-              TextField(
-                controller: amount,
-                decoration: InputDecoration(
-                  hintText: "Amount You Wish To Pay"
-                ),
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          title: Text('Send Money'),
+        ),
+        body: Center(
+          child: Container(
+            //height: MediaQuery.of(context).size.height*0.15,
+            child:Column(
+                mainAxisAlignment: MainAxisAlignment.center ,//Center Column contents vertically,
+                crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                  TextField(
+                    controller: amount,
+                    decoration: InputDecoration(
+                      hintText: "Amount You Wish To Pay"
+                    ),
+                  ),
+                  SizedBox(height: 12,),
+                  RaisedButton(
+                    color: Colors.blue,
+                    onPressed: (){
+                      openCheckout();
+                    },
+                    child: Text('Pay Now', style: TextStyle(
+                      color: Colors.white
+                    ),),
+                  ),
+                ],
               ),
-              SizedBox(height: 12,),
-              RaisedButton(
-                color: Colors.blue,
-                onPressed: (){
-                  openCheckout();
-                },
-                child: Text('Pay Now', style: TextStyle(
-                  color: Colors.white
-                ),),
-              ),
-            ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
