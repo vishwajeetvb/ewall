@@ -33,6 +33,58 @@ class _MyBudgetState extends State<MyBudget> {
 
   final GlobalKey<FormState> _limitformKey = GlobalKey<FormState>();
 
+  void addBudget() {
+    setState(() {
+      int value=0;
+      switch(_chosenMonth.toString()){
+        case "January":{
+          value=1;
+        }break;
+        case "February":{
+          value=2;
+        }break;
+        case "March":{
+          value=3;
+        }break;
+        case "April":{
+          value=4;
+        }break;
+        case "May":{
+          value=5;
+        }break;
+        case "June":{
+          value=6;
+        }break;
+        case "July":{
+          value=7;
+        }break;
+        case "August":{
+          value=8;
+        }break;
+        case "September":{
+          value=9;
+        }break;
+        case "October":{
+          value=10;
+        }break;
+        case "November":{
+          value=11;
+        }break;
+        default:{
+          value=12;
+        }break;
+      }
+
+      Map<String, dynamic> budgettxn = {
+        'BudgetMonth': (_chosenMonth.toString()),
+        'BudgetCategory': (_chosenCategory.toString()),
+        'BudgetAmount': (_limitamountcontroller.text),
+        'BudgetMonthNumber': value
+      };
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid).collection("Budget").add(budgettxn);
+    });
+  }
+
   Icon runtimeIcon(String category) {
     if (category == 'Entertainment') {
       return Icon(
@@ -125,133 +177,135 @@ class _MyBudgetState extends State<MyBudget> {
                 ),
                 borderRadius:
                 BorderRadius.circular(20)),
-            child: Column(
-                  children: [
-                    Text("Money For Bussiness",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 15,),
-                    Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: [
-                       Column(
-                       crossAxisAlignment: CrossAxisAlignment.center,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                    children: [
+                      Text("Money For Bussiness",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 15,),
+                      Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
                        children: [
-                         Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
+                         Column(
+                         crossAxisAlignment: CrossAxisAlignment.center,
                          children: [
-                           Text("Money Spent",style: TextStyle(
-                             fontSize: 14,
-                             fontWeight: FontWeight.w500
-                           ),)
-                         ],
-                       ),
-                         SizedBox(height: 10,),
-                         Row(
+                           Row(
                            mainAxisAlignment: MainAxisAlignment.center,
                            children: [
-                             Text("100000",style: TextStyle(
-                                 fontSize: 14,
-                                 fontWeight: FontWeight.w500
+                             Text("Money Spent",style: TextStyle(
+                               fontSize: 14,
+                               fontWeight: FontWeight.w500
                              ),)
                            ],
-                         )
+                         ),
+                           SizedBox(height: 10,),
+                           Row(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             children: [
+                               Text("100000",style: TextStyle(
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.w500
+                               ),)
+                             ],
+                           )
+                         ],
+                       ),
+                         SizedBox(width: 10,),
+                         Column(
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: [
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Text("Target",style: TextStyle(
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w500
+                                 ),)
+                               ],
+                             ),
+                             SizedBox(height: 10,),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Text("100000",style: TextStyle(
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w500
+                                 ),)
+                               ],
+                             )
+                           ],
+                         ),
+                         SizedBox(width: 10,),
+                         Column(
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: [
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Text("Remaining",style: TextStyle(
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w500
+                                 ),)
+                               ],
+                             ),
+                             SizedBox(height: 10,),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Text("100000",style: TextStyle(
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w500
+                                 ),)
+                               ],
+                             )
+                           ],
+                         ),
                        ],
-                     ),
-                       SizedBox(width: 10,),
-                       Column(
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text("Target",style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.w500
-                               ),)
-                             ],
-                           ),
-                           SizedBox(height: 10,),
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text("100000",style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.w500
-                               ),)
-                             ],
-                           )
-                         ],
-                       ),
-                       SizedBox(width: 10,),
-                       Column(
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text("Remaining",style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.w500
-                               ),)
-                             ],
-                           ),
-                           SizedBox(height: 10,),
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text("100000",style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.w500
-                               ),)
-                             ],
-                           )
-                         ],
-                       ),
-                     ],
-                    ),
-                    SizedBox(height: 15,),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: Container(
-                              // tag: 'hero',
-                              child: SfLinearGauge(
-                                  ranges: <LinearGaugeRange>[
-                                    //First range
-                                    LinearGaugeRange(
-                                        startValue: 0,
-                                        endValue: 50,
-                                        color: Colors.green
-                                    ),
-                                    LinearGaugeRange(
-                                        startValue:50,
-                                        endValue: 80,
-                                        color: Colors.yellow
-                                    ),
-                                    LinearGaugeRange(
-                                        startValue: 80,
-                                        endValue: 100,
-                                        color: Colors.red
-                                    ),
-                                  ],
-                                  markerPointers: [
-                                    LinearShapePointer(value: 50),
-                                  ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(height: 15,),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: Container(
+                                // tag: 'hero',
+                                child: SfLinearGauge(
+                                    ranges: <LinearGaugeRange>[
+                                      //First range
+                                      LinearGaugeRange(
+                                          startValue: 0,
+                                          endValue: 50,
+                                          color: Colors.green
+                                      ),
+                                      LinearGaugeRange(
+                                          startValue:50,
+                                          endValue: 80,
+                                          color: Colors.yellow
+                                      ),
+                                      LinearGaugeRange(
+                                          startValue: 80,
+                                          endValue: 100,
+                                          color: Colors.red
+                                      ),
+                                    ],
+                                    markerPointers: [
+                                      LinearShapePointer(value: 50),
+                                    ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+            ),
         ),
 
     );
   }
-
 
   Container addLimit() {
     return Container(
@@ -274,15 +328,17 @@ class _MyBudgetState extends State<MyBudget> {
                   style: TextStyle(color: Color(0xffEA6700)),
                   items: <String>[
                     'January',
-                    'Education',
-                    'Entertainment',
-                    'Transportation',
-                    'Daily Expense',
-                    'House/Rent',
-                    'Health Care',
-                    'Dues/Subscriptions',
-                    'Savings/Investments',
-                    'Others'
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -325,10 +381,10 @@ class _MyBudgetState extends State<MyBudget> {
                     'Dues/Subscriptions',
                     'Savings/Investments',
                     'Others'
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  ].map<DropdownMenuItem<String>>((String vvalue) {
                     return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
+                      value: vvalue,
+                      child: Text(vvalue),
                     );
                   }).toList(),
                   hint: Text(
@@ -338,9 +394,9 @@ class _MyBudgetState extends State<MyBudget> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
-                  onChanged: (String value) {
+                  onChanged: (String vvalue) {
                     setState(() {
-                      _chosenCategory = value;
+                      _chosenCategory = vvalue;
                     });
                   },
                 ),
@@ -391,19 +447,20 @@ class _MyBudgetState extends State<MyBudget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "Create Your Budget",
-                            textAlign: TextAlign.center,
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 15),
+                          FlatButton(
+                            child: Text('Create Your Budget', style: TextStyle(fontSize: 20.0),),
+                            textColor: Colors.white,
+                            onPressed: () {
+                              if(_limitformKey.currentState.validate()){
+                                addBudget();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            MyBudget(user: widget.user,)));
+                              }
+                            },
                           ),
-                          SizedBox(width: 5,),
-                          IconButton(
-                              onPressed: () {
-
-                              },
-                              icon: Icon(Icons.create)
-                          )
                         ]
                     ),
                   ),
