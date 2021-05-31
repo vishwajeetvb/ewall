@@ -9,8 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'classes/User.dart';
-
 class Homepage extends StatefulWidget {
   static const routeName = '/home';
   Homepage({Key key,this.user}) : super(key: key);
@@ -22,8 +20,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  CurrentUser currentUser;
 
   TextEditingController _transactionTitleController;
   TextEditingController _amountController;
@@ -40,25 +36,43 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   int labelkot;
   int labelutc;
   bool utransactionClass;
-  static double amountInAccount = 0;
+  static double amountSpent = 0;
+  static double amountEarned = 0;
 
   @override
   void initState() {
     super.initState();
     _transactionTitleController = TextEditingController();
     _amountController = TextEditingController();
-    getAmountInAccount();
+    getAmountEarned();
+    getAmountSpent();
   }
 
-  void getAmountInAccount(){
-    amountInAccount=0;
+  void getAmountEarned(){
+    amountEarned=0;
     var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
         .collection('Transaction');
-    var query = collectionReference.where('TransactionAmount',isGreaterThanOrEqualTo: 0);
+    var query = collectionReference.where('TransactionAmount',isGreaterThanOrEqualTo: 0).where('KindOfTransaction',isEqualTo: 'Income');
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         setState(() {
-          amountInAccount+=element['TransactionAmount'];
+          amountEarned+=element['TransactionAmount'];
+        });
+      }
+      );
+    }
+    );
+  }
+
+  void getAmountSpent(){
+    amountSpent=0;
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
+        .collection('Transaction');
+    var query = collectionReference.where('TransactionAmount',isGreaterThanOrEqualTo: 0).where('KindOfTransaction',isEqualTo: 'Expense');
+    query.get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        setState(() {
+          amountSpent+=element['TransactionAmount'];
         });
       }
       );
@@ -80,7 +94,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       } else {
         tn.transactionClass = "Liabilities";
       }
-      amountInAccount+=double.tryParse(_amountController.text);
       Map<String, dynamic> txn = {
         'TransactionTitle': (_transactionTitleController.text),
         'TransactionAmount': (int.parse(_amountController.text)),
@@ -379,7 +392,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       FirebaseFirestore.instance.collection("Users").doc(widget.user.uid)
           .collection("Transaction").doc(txndoc.id)
           .delete();
-      getAmountInAccount();
     });
   }
 
@@ -633,7 +645,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        Homepage()));
+                                        Homepage(user: widget.user,)));
                           }
                         },
                         shape: RoundedRectangleBorder(
@@ -697,7 +709,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                Homepage()));
+                                                Homepage(user: widget.user,)));
                                     },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(80.0)),
@@ -992,7 +1004,10 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Container(
-                      child: addAccount(amountInAccount, 'Your Expense Amount'),
+                      child: addAccount(amountEarned, 'Your Earned Amount'),
+                    ),
+                    Container(
+                      child: addAccount(amountSpent, 'Your Expense Amount'),
                     ),
                   ],
                 ),

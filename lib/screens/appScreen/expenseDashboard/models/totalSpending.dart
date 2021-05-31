@@ -1,7 +1,9 @@
 
+import 'package:ewall/screens/appScreen/expenseDashboard/classes/AreaChartData.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/classes/circularData.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/models/CircularChart.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
+import 'package:ewall/screens/appScreen/expenseDashboard/models/StackedAreaChart.dart';
 import 'package:flutter/material.dart';
 import '../classes/SpendingData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,31 +20,60 @@ class TotalSpending extends StatefulWidget {
 
 class _TotalSpendingState extends State<TotalSpending> {
 
-  List<SpendingData> data = [];
+  List<LinearChartData> data = [];
   List<CircularData> others = [];
+  List<AreaChartData> incomedata = [];
 
   @override
   void initState() {
     super.initState();
     getTSGraphData();
     getCCGraphData();
+    getIncomeGraphData();
   }
 
   void getTSGraphData(){
-
     var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid).
-        collection('Transaction').orderBy('TransactionDate');
-    collectionReference.get().then((QuerySnapshot querySnapshot) {
+    collection('Transaction').orderBy('TransactionDate');
+    var query = collectionReference.where('KindOfTransaction',isEqualTo:"Expense");
+    query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
-        SpendingData tsd = SpendingData(
+        LinearChartData tsd = LinearChartData(
             DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch)
             ,element['TransactionAmount'].toDouble()
         );
+        print("Total Spending Data");
         print(DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
             +element['TransactionAmount'].toDouble().toString());
         setState(() {
           data.add(tsd);
         });
+      }
+      );});
+  }
+
+  void getIncomeGraphData(){
+    var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid).
+        collection('Transaction').orderBy('TransactionDate');
+    collectionReference.get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if(element['KindOfTransaction']=='Income'){
+        AreaChartData tsd = AreaChartData(
+            date:DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch),
+            incomeAmount:element['TransactionAmount'].toDouble()
+        );
+        setState(() {
+          incomedata.add(tsd);
+        });
+        }else{
+          AreaChartData tsd = AreaChartData(
+              date:DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch),
+              expenseAmount:element['TransactionAmount'].toDouble()
+          );
+          setState(() {
+            incomedata.add(tsd);
+          });
+        }
       }
       );});
 
@@ -71,7 +102,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Entertainment',((amount/TotalAmount)*100).toInt(),Colors.white));
+        others.add(CircularData('Entertainment',((amount/TotalAmount)*100).toInt(),Colors.orange));
       });
     }
     );
@@ -213,6 +244,15 @@ class _TotalSpendingState extends State<TotalSpending> {
                     Container(
                       height: 308,
                       child: CircularChart(data : others),
+                    ),
+                    SizedBox(height: 20,),
+                    Text("Income Vs Expense Graph",style: TextStyle(
+                        fontSize: 18
+                    ),),
+                    SizedBox(height: 20,),
+                    Container(
+                      height: 308,
+                      child: AreaChart(data: incomedata,),
                     ),
                   ]
               )

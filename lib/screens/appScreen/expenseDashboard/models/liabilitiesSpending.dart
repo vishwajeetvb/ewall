@@ -15,7 +15,7 @@ class LiabilitiesSpending extends StatefulWidget {
 
 class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
 
-  List<SpendingData> liabilitiesdata = [];
+  List<LinearChartData> liabilitiesdata = [];
 
 
   @override
@@ -30,15 +30,21 @@ class _LiabilitiesSpendingState extends State<LiabilitiesSpending> {
     var query = collectionReference.where('TransactionClass',isEqualTo:"Liabilities");
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
-        SpendingData tsd = SpendingData(
+        LinearChartData tsd = LinearChartData(
             DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch)
             ,element['TransactionAmount'].toDouble()
         );
         setState(() {
           liabilitiesdata.add(tsd);
         });
+        print("Total Liabilities Data");
+        print(DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
+            +element['TransactionAmount'].toDouble().toString());
       }
-      );});
+      );
+
+
+    });
 
   }
 

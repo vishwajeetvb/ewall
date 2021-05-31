@@ -16,7 +16,7 @@ class AssetsSpending extends StatefulWidget {
 
 class _AssetsSpendingState extends State<AssetsSpending> {
 
-  List<SpendingData> assetdata = [];
+  List<LinearChartData> assetdata = [];
   ZoomPanBehavior _zoomPanBehavior;
 
   @override
@@ -31,13 +31,16 @@ class _AssetsSpendingState extends State<AssetsSpending> {
     var query = collectionReference.where('TransactionClass',isEqualTo:"Assets");
     query.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
-        SpendingData tsd = SpendingData(
+        LinearChartData tsd = LinearChartData(
             DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch)
             ,element['TransactionAmount'].toDouble()
         );
         setState(() {
           assetdata.add(tsd);
         });
+        print("Total Assets Data");
+        print(DateTime.fromMicrosecondsSinceEpoch(element['TransactionDate'].microsecondsSinceEpoch).toString()
+            +element['TransactionAmount'].toDouble().toString());
       }
       );});
 

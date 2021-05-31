@@ -4,7 +4,7 @@ import 'package:ewall/screens/appScreen/expenseDashboard/classes/circularData.da
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../classes/categoriesData.dart';
+
 
 class CircularChart extends StatefulWidget {
   List<CircularData> data;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class LineChart extends StatefulWidget {
-  final  List<SpendingData> data;
+  final  List<LinearChartData> data;
   LineChart({Key key, this.data}) : super(key: key);
 
   @override
@@ -42,12 +42,13 @@ class _LineChartState extends State<LineChart> {
                 tooltipBehavior: TooltipBehavior(enable: true),
 
                 series: <ChartSeries>[
-                  LineSeries<SpendingData,DateTime>(
-                      width: 2,
+                  SplineSeries<LinearChartData,DateTime>(
                       dataSource: widget.data,
-                      xValueMapper: (SpendingData data, _) => data.date,
-                      yValueMapper: (SpendingData data, _) => data.totalAmount,
-                      dataLabelSettings: DataLabelSettings(isVisible: true)
+                      splineType: SplineType.cardinal,
+                      cardinalSplineTension: 0.5,
+                      xValueMapper: (LinearChartData data, _) => data.date,
+                      yValueMapper: (LinearChartData data, _) => data.totalAmount,
+                      markerSettings: MarkerSettings(isVisible: true)
                   )
                 ]
             ),
