@@ -114,13 +114,31 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Food & Drinks') {
+    } else if (category == 'Food/Drinks') {
       return Icon(
         Icons.fastfood,
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Housing') {
+    } else if (category == 'Education') {
+      return Icon(
+        Icons.account_balance_outlined,
+        color: Colors.white,
+        size: 40.00,
+      );
+    }else if (category == 'Daily Expense') {
+      return Icon(
+        Icons.today,
+        color: Colors.white,
+        size: 40.00,
+      );
+    }else if (category == 'Dues/Subscriptions') {
+      return Icon(
+        Icons.notifications,
+        color: Colors.white,
+        size: 40.00,
+      );
+    } else if (category == 'House/Rent') {
       return Icon(
         Icons.house_outlined,
         color: Colors.white,
@@ -132,19 +150,19 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Investments') {
+    } else if (category == 'Savings/Investments') {
       return Icon(
         Icons.book_outlined,
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Income') {
+    } else if (category == 'Salary/BusinessIncome') {
       return Icon(
-        Icons.money,
+        Icons.attach_money_outlined,
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Insurance') {
+    } else if (category == 'Health Care') {
       return Icon(
         Icons.medical_services_outlined,
         color: Colors.white,
@@ -225,19 +243,21 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.orange.shade600),
                               borderRadius: BorderRadius.circular(20)),
-                          padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
+                          padding: const EdgeInsets.fromLTRB(30, 2, 30, 2),
                           child: DropdownButton<String>(
                             value: _chosenCategory,
                             elevation: 5,
                             style: TextStyle(color: Color(0xffEA6700)),
                             items: <String>[
+                              'Food/Drinks',
+                              'Education',
                               'Entertainment',
-                              'Food & Drinks',
-                              'Housing',
                               'Transportation',
-                              'Investments',
-                              'Income',
-                              'Insurance',
+                              'Daily Expense',
+                              'House/Rent',
+                              'Health Care',
+                              'Dues/Subscriptions',
+                              'Savings/Investments',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -395,6 +415,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     });
   }
 
+  //Update Methods
   Future<void> updateTransaction(DocumentSnapshot txndoc) async {
     setState(() {
       String kot;
@@ -435,6 +456,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       );
     });
   }
+
   void getupdateControllerValue(BuildContext context,DocumentSnapshot txndoc){
     _utransactionTitleController.text=txndoc['TransactionTitle'].toString();
     _uamountController.text=txndoc['TransactionAmount'].toString();
@@ -452,6 +474,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     }
     updateTransactionsForm(context,txndoc);
   }
+
   Future<void> updateTransactionsForm(BuildContext context,DocumentSnapshot txndoc) async {
     return await showDialog(
         context: context,
@@ -692,25 +715,21 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  height: 502,
+                  constraints: BoxConstraints(
+                    maxHeight: double.infinity,
+                  ),
                   child:
                     Column(
                       children: [
-
                         Row(
                           children: [
                             Container(
                               height: 50.0,
                               margin: EdgeInsets.all(6),
                               child: RaisedButton(
-                                onPressed: () async{
-                                    await deleteTransaction(txndoc);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                Homepage(user: widget.user,)));
-                                    },
+                                onPressed: () {
+                                  getupdateControllerValue(context, txndoc);
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(80.0)),
                                 padding: EdgeInsets.all(0.0),
@@ -728,75 +747,89 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                         maxWidth: MediaQuery.of(context).size.width*0.59, minHeight: 50.0),
                                     alignment: Alignment.center,
                                     child: Row(
-                                      children: [
-                                        SizedBox(width: 10,),
-                                        Text(
-                                          "Transaction Details",
-                                          textAlign: TextAlign.center,
-                                          style:
-                                          TextStyle(color: Colors.white, fontSize: 15),
-                                        ),
-                                        SizedBox(width: 20),
-                                        IconButton(
-                                            onPressed: () {
+                                        children: [
+                                          SizedBox(width: 10,),
+                                          Text(
+                                            "Update Transaction",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                            TextStyle(color: Colors.white, fontSize: 15),
+                                          ),
+                                          SizedBox(width: 20),
+                                          IconButton(
+                                              onPressed: () {
 
-                                            },
-                                            icon: Icon(Icons.delete)
-                                        )
-                                      ]
+                                              },
+                                              icon: Icon(Icons.update)
+                                          )
+                                        ]
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-
-
                           ],
                         ),
                         SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Container(
+                              height: 50.0,
+                              margin: EdgeInsets.all(6),
+                              child: RaisedButton(
+                                onPressed: () async{
+                                  await deleteTransaction(txndoc);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              Homepage(user: widget.user,)));
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [Color(0xffFFD169), Color(0xffEA6700)],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  child: Container(
+                                    margin: EdgeInsets.all(3),
+                                    constraints: BoxConstraints(
+                                        maxWidth: MediaQuery.of(context).size.width*0.59, minHeight: 50.0),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                        children: [
+                                          SizedBox(width: 10,),
+                                          Text(
+                                            "Delete Transactions",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                            TextStyle(color: Colors.white, fontSize: 15),
+                                          ),
+                                          SizedBox(width: 20),
+                                          IconButton(
+                                              onPressed: () {
+
+                                              },
+                                              icon: Icon(Icons.delete)
+                                          )
+                                        ]
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
 
                        ],
                     ),
                 ),
               ),
-              actions: <Widget>[
-                Row(
-                  children: [
-                    Container(
-                      height: 50.0,
-                      margin: EdgeInsets.all(6),
-                      child: RaisedButton(
-                        onPressed: () {
-                          getupdateControllerValue(context, txndoc);
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80.0)),
-                        padding: EdgeInsets.all(0.0),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xffFFD169), Color(0xffEA6700)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.circular(30.0)),
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: 250.0, minHeight: 50.0),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Update Transactions",
-                              textAlign: TextAlign.center,
-                              style:
-                              TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
             );
           });
         });

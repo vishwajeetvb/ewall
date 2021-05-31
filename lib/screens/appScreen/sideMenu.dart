@@ -1,3 +1,4 @@
+import 'package:ewall/screens/appScreen/budget/yourBudget.dart';
 import 'package:ewall/screens/appScreen/expenseDashboard/expense_dashboard.dart';
 import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,11 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage(user: widget.user,)))},
+          ),
+          ListTile(
+            leading: Icon(Icons.book_outlined),
+            title: Text('Create Your Budget'),
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyBudget(user: widget.user,)))},
           ),
           ListTile(
             leading: Icon(Icons.monetization_on_sharp),

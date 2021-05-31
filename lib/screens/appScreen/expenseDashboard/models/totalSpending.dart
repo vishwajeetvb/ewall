@@ -94,7 +94,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     );
 
 
-    var query1 = collectionReference.where('TransactionCategory',isEqualTo:"Entertainment");
+    var query1 = collectionReference.where('TransactionCategory',isEqualTo:"Food/Drinks");
     query1.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -102,12 +102,12 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Entertainment',((amount/TotalAmount)*100).toInt(),Colors.orange));
+        others.add(CircularData('Food/Drinks',((amount/TotalAmount)*100).toInt(),Color(0xff003F5C)));
       });
     }
     );
 
-    var query2 = collectionReference.where('TransactionCategory',isEqualTo:"Food & Drinks");
+    var query2 = collectionReference.where('TransactionCategory',isEqualTo:"Education");
     query2.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -115,12 +115,12 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Food & Drinks',((amount/TotalAmount)*100).toInt(),Colors.purple));
+        others.add(CircularData('Education',((amount/TotalAmount)*100).toInt(),Color(0xff58508D)));
       });
     }
     );
 
-    var query3 = collectionReference.where('TransactionCategory',isEqualTo:"Housing");
+    var query3 = collectionReference.where('TransactionCategory',isEqualTo:"Entertainment");
     query3.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -130,7 +130,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Housing',((amount/TotalAmount)*100).toInt(),Colors.blue));
+        others.add(CircularData('Entertainment',((amount/TotalAmount)*100).toInt(),Color(0xffBC5090)));
       });
     }
     );
@@ -146,12 +146,12 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Transportation',((amount/TotalAmount)*100).toInt(),Colors.green));
+        others.add(CircularData('Transportation',((amount/TotalAmount)*100).toInt(),Color(0xffFF6361)));
       });
     }
     );
 
-    var query5 = collectionReference.where('TransactionCategory',isEqualTo:"Investments");
+    var query5 = collectionReference.where('TransactionCategory',isEqualTo:"Regular Expense");
     query5.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -161,12 +161,12 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Investments',((amount/TotalAmount)*100).toInt(),Colors.lightGreenAccent));
+        others.add(CircularData('Regular Expense',((amount/TotalAmount)*100).toInt(),Color(0xffFFA600)));
       });
     }
     );
 
-    var query6 = collectionReference.where('TransactionCategory',isEqualTo:"Income");
+    var query6 = collectionReference.where('TransactionCategory',isEqualTo:"House/Rent");
     query6.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -176,13 +176,13 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Income',((amount/TotalAmount)*100).toInt(),Colors.brown));
+        others.add(CircularData('House/Rent',((amount/TotalAmount)*100).toInt(),Color(0xff93F03B)));
       });
 
     }
     );
 
-    var query7 = collectionReference.where('TransactionCategory',isEqualTo:"Insurance");
+    var query7 = collectionReference.where('TransactionCategory',isEqualTo:"Health Care");
     query7.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -192,13 +192,13 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Insurance',((amount/TotalAmount)*100).toInt(),Colors.yellow));
+        others.add(CircularData('Health Care',((amount/TotalAmount)*100).toInt(),Color(0xff9552EA)));
       });
 
     }
     );
 
-    var query8 = collectionReference.where('TransactionCategory',isEqualTo:"Others");
+    var query8 = collectionReference.where('TransactionCategory',isEqualTo:"Dues/Subscriptions");
     query8.get().then((QuerySnapshot querySnapshot) {
       double amount=0;
       querySnapshot.docs.forEach((element) {
@@ -208,7 +208,39 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Others',((amount/TotalAmount)*100).toInt(),Colors.blueGrey));
+        others.add(CircularData('Dues/Subscriptions',((amount/TotalAmount)*100).toInt(),Color(0xff378AFF)));
+      });
+
+    }
+    );
+
+    var query9 = collectionReference.where('TransactionCategory',isEqualTo:"Savings/Investments");
+    query9.get().then((QuerySnapshot querySnapshot) {
+      double amount=0;
+      querySnapshot.docs.forEach((element) {
+        setState(() {
+          amount = amount + element['TransactionAmount'];
+        });
+      }
+      );
+      setState(() {
+        others.add(CircularData('Savings/Investments',((amount/TotalAmount)*100).toInt(),Color(0xffFE8B02)));
+      });
+
+    }
+    );
+
+    var query10 = collectionReference.where('TransactionCategory',isEqualTo:"Others");
+    query10.get().then((QuerySnapshot querySnapshot) {
+      double amount=0;
+      querySnapshot.docs.forEach((element) {
+        setState(() {
+          amount = amount + element['TransactionAmount'];
+        });
+      }
+      );
+      setState(() {
+        others.add(CircularData('Others',((amount/TotalAmount)*100).toInt(),Color(0xff9D0BFA)));
       });
 
     }
