@@ -182,7 +182,7 @@ class _MyBudgetState extends State<MyBudget> {
     }
   }
 
-  Card makeCard(String category) {
+  Card makeCard(String category,String month,String amount) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -551,7 +551,7 @@ class _MyBudgetState extends State<MyBudget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //This Row for Send Money and Send Money Icon
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -614,13 +614,13 @@ class _MyBudgetState extends State<MyBudget> {
                       stream: FirebaseFirestore.instance
                           .collection("Users")
                           .doc(widget.user.uid)
-                          .collection('Transaction')
+                          .collection('Budget')
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) {
                           return Center(
-                            child: Text('No Data Avaliable'),
+                            child: Text('No Data Available'),
                           );
                         }
                         return Container(
@@ -632,9 +632,10 @@ class _MyBudgetState extends State<MyBudget> {
                           ),
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,
-                            itemCount: category.length,
+                            itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
-                              return makeCard(category[index]);
+                              DocumentSnapshot txndata = snapshot.data.docs[index];
+                              return makeCard(txndata['BudgetCategory'],txndata['BudgetMonth'],txndata['BudgetAmount']);
                             },
                           ),
                         );
