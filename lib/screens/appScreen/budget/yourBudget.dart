@@ -182,7 +182,7 @@ class _MyBudgetState extends State<MyBudget> {
     }
   }
 
-  Card makeCard(String category,String month,String amount) {
+  Card makeCard(String category,String month,String budgetAmount,String amountSpent,double gaugeValue,String budgetAmountRemaining) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -208,7 +208,7 @@ class _MyBudgetState extends State<MyBudget> {
                 Column(
                   children: [
                     Text(
-                      "Bussiness",
+                      "$category",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -221,7 +221,7 @@ class _MyBudgetState extends State<MyBudget> {
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Text(
-                    "December",
+                    "$month",
                     style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -255,7 +255,7 @@ class _MyBudgetState extends State<MyBudget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "100000",
+                            "$amountSpent",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           )
@@ -286,7 +286,7 @@ class _MyBudgetState extends State<MyBudget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "100000",
+                            "$budgetAmount",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           )
@@ -317,7 +317,7 @@ class _MyBudgetState extends State<MyBudget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "100000",
+                            "$budgetAmountRemaining",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           )
@@ -536,6 +536,18 @@ class _MyBudgetState extends State<MyBudget> {
     );
   }
 
+  String getBudgetAmountSpent(String category){
+    return 1000.toString();
+  }
+
+  double getGaugeValue(){
+    return 1000;
+  }
+
+  String getBudgetAmountRemaining(){
+    return 1000.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -635,7 +647,14 @@ class _MyBudgetState extends State<MyBudget> {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot txndata = snapshot.data.docs[index];
-                              return makeCard(txndata['BudgetCategory'],txndata['BudgetMonth'],txndata['BudgetAmount']);
+                              return makeCard(
+                                  txndata['BudgetCategory'].toString(),
+                                  txndata['BudgetMonth'].toString(),
+                                  txndata['BudgetAmount'].toString(),
+                                  getBudgetAmountSpent(txndata['BudgetCategory']),
+                                  getGaugeValue(),
+                                  getBudgetAmountRemaining().toString(),
+                              );
                             },
                           ),
                         );
