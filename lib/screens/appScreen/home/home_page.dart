@@ -546,13 +546,15 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             elevation: 5,
                             style: TextStyle(color: Color(0xffEA6700)),
                             items: <String>[
+                              'Food/Drinks',
+                              'Education',
                               'Entertainment',
-                              'Food & Drinks',
-                              'Housing',
                               'Transportation',
-                              'Investments',
-                              'Income',
-                              'Insurance',
+                              'Daily Expense',
+                              'House/Rent',
+                              'Health Care',
+                              'Dues/Subscriptions',
+                              'Savings/Investments',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
