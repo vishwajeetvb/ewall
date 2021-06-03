@@ -1,6 +1,5 @@
 name: ewall
 description: A new Flutter application.
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -23,15 +22,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
-flutter_icons:
-    image_path_android: "assets/images/icons8-investment-portfolio-64.png"
-    android: true
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +47,11 @@ dev_dependencies:
   http: ^0.13.3
   flutter_launcher_icons: ^0.9.0
   syncfusion_flutter_gauges: ^19.1.65
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/icons8-investment-portfolio-64.png"
+
 
 
 

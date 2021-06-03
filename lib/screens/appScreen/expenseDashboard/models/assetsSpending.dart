@@ -43,7 +43,6 @@ class _AssetsSpendingState extends State<AssetsSpending> {
             +element['TransactionAmount'].toDouble().toString());
       }
       );});
-
   }
 
   @override

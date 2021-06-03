@@ -1,4 +1,5 @@
 import 'package:ewall/screens/appScreen/home/home_page.dart';
+import 'package:ewall/screens/auth/forget_password.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  final User user;
+  LoginPage({Key key,this.user}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -56,20 +58,27 @@ class _LoginPageState extends State<LoginPage> {
                   key: _loginFormKey,
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
-                        controller: emailInputController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: emailValidator,
+                      Container(
+
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                          controller: emailInputController,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: emailValidator,
+                        ),
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Password*', hintText: "********"),
-                        controller: pwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
+                      Container(
+
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Password*', hintText: "********"),
+                          controller: pwdInputController,
+                          obscureText: true,
+                          validator: pwdValidator,
+                        ),
                       ),
+                      SizedBox(height: 10,),
                       RaisedButton(
                         child: Text("Login"),
                         color: Theme.of(context).primaryColor,
@@ -83,14 +92,32 @@ class _LoginPageState extends State<LoginPage> {
                                 .then((currentUser) => FirebaseFirestore.instance
                                 .collection("users")
                                 .doc(currentUser.user.uid)
-                                .get()
-                                .then((DocumentSnapshot result) =>
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Homepage(
-                                        user: currentUser.user,
-                                        ))))
+                                .get().then((value) {
+                                  if(currentUser.user.emailVerified){
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Homepage(
+                                              user: currentUser.user,
+                                            )));
+                                  }else{
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: Text("Attention"),
+                                        content: Text("Please Verify Email First"),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: Text("Sure"),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                })
                                 .catchError((err) => print(err)))
                                 .catchError((err) => print(err));
                           }
@@ -104,7 +131,16 @@ class _LoginPageState extends State<LoginPage> {
                             MaterialPageRoute(builder: (context) => RegisterPage()),
                           );
                         },
-                      )
+                      ),
+                      FlatButton(
+                        onPressed: (){
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ForgetPassword(user: widget.user,)),
+                          );
+                        },
+                        textColor: Colors.blue,
+                        child: Text('Forgot Password'),
+                      ),
                     ],
                   ),
                 ))));

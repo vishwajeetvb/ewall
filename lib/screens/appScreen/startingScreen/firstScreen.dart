@@ -96,8 +96,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
                       //This container for the logo
                       Container(
-                        height: 70,
-                        width: 70,
+                        height: MediaQuery.of(context).size.height*0.1,
+                        width: MediaQuery.of(context).size.width*0.2,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage("asset/images/logo.png"),

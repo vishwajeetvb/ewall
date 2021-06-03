@@ -2,7 +2,7 @@
     package="com.example.ewall">
 
    <application
-        android:label="ewall"
+        android:label="Trans Manager"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -114,7 +114,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Food/Drinks') {
+    } else if (category == 'Food Items') {
       return Icon(
         Icons.fastfood,
         color: Colors.white,
@@ -132,13 +132,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    }else if (category == 'Dues/Subscriptions') {
+    }else if (category == 'Dues Subscriptions') {
       return Icon(
         Icons.notifications,
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'House/Rent') {
+    } else if (category == 'House Rent') {
       return Icon(
         Icons.house_outlined,
         color: Colors.white,
@@ -150,13 +150,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Savings/Investments') {
+    } else if (category == 'Savings Investments') {
       return Icon(
         Icons.book_outlined,
         color: Colors.white,
         size: 40.00,
       );
-    } else if (category == 'Salary/BusinessIncome') {
+    } else if (category == 'Salary BusinessIncome') {
       return Icon(
         Icons.attach_money_outlined,
         color: Colors.white,
@@ -189,7 +189,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  height: 502,
+                  height: MediaQuery.of(context).size.height*0.7,
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -249,15 +249,15 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             elevation: 5,
                             style: TextStyle(color: Color(0xffEA6700)),
                             items: <String>[
-                              'Food/Drinks',
+                              'Food Items',
                               'Education',
                               'Entertainment',
                               'Transportation',
                               'Daily Expense',
-                              'House/Rent',
+                              'House Rent',
                               'Health Care',
-                              'Dues/Subscriptions',
-                              'Savings/Investments',
+                              'Dues Subscriptions',
+                              'Savings Investments',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -360,7 +360,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 Row(
                   children: [
                     Container(
-                      height: 50.0,
+                      height: MediaQuery.of(context).size.height*0.08,
                       margin: EdgeInsets.all(6),
                       child: RaisedButton(
                         onPressed: () {
@@ -486,7 +486,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  height: 502,
+                  height: MediaQuery.of(context).size.height*0.7,
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -540,21 +540,21 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.orange.shade600),
                               borderRadius: BorderRadius.circular(20)),
-                          padding: const EdgeInsets.fromLTRB(40, 2, 40, 2),
+                          padding: const EdgeInsets.fromLTRB(30, 2, 30, 2),
                           child: DropdownButton<String>(
                             value: _uchosenCategory,
                             elevation: 5,
                             style: TextStyle(color: Color(0xffEA6700)),
                             items: <String>[
-                              'Food/Drinks',
+                              'Food Items',
                               'Education',
                               'Entertainment',
                               'Transportation',
                               'Daily Expense',
-                              'House/Rent',
+                              'House Rent',
                               'Health Care',
-                              'Dues/Subscriptions',
-                              'Savings/Investments',
+                              'Dues Subscriptions',
+                              'Savings Investments',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -660,7 +660,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 Row(
                   children: [
                     Container(
-                      height: 50.0,
+                      height: MediaQuery.of(context).size.height*0.08,
                       margin: EdgeInsets.all(6),
                       child: RaisedButton(
                         onPressed: () {
@@ -726,7 +726,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         Row(
                           children: [
                             Container(
-                              height: 50.0,
+                              height: MediaQuery.of(context).size.height*0.07,
                               margin: EdgeInsets.all(6),
                               child: RaisedButton(
                                 onPressed: () {
@@ -776,7 +776,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         Row(
                           children: [
                             Container(
-                              height: 50.0,
+                              height: MediaQuery.of(context).size.height*0.07,
                               margin: EdgeInsets.all(6),
                               child: RaisedButton(
                                 onPressed: () async{
@@ -890,8 +890,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   children: <Widget>[
                     Expanded(
                         child: Container(
-                            width: 500,
-                            // tag: 'hero',
                             child: Text(
                               "${time.year.toString()}"
                                   "-${time.month.toString()}"
@@ -954,8 +952,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   Row(
                     children: [
                       Container(
-                        width: 50,
-                        height: 30,
+                        width: MediaQuery.of(context).size.width*0.12,
+                        height: MediaQuery.of(context).size.height*0.03,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                           image: AssetImage('asset/images/logo.png'),
@@ -987,7 +985,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   Text(
                     "Send Money",
                     style: TextStyle(
-                      fontSize: 21,
+                      fontSize: 22,
                       fontWeight: FontWeight.w800,
                       fontFamily: 'avenir',
                     ),
@@ -1013,7 +1011,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               //This Row for Send Money and Send Money Icon
               Row(
@@ -1022,7 +1020,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   Text(
                     "Your Account",
                     style: TextStyle(
-                      fontSize: 21,
+                      fontSize: 22,
                       fontWeight: FontWeight.w800,
                       fontFamily: 'avenir',
                     ),
@@ -1063,9 +1061,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                    //To Conthe alert dialoug boxtrol height of
-                    height: 60,
-                    width: 60,
                     child: IconButton(
                       onPressed: () async {
                         await addTransactions(context);
@@ -1134,8 +1129,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   Container addAccount(var money, String textName) {
     return Container(
       margin: EdgeInsets.only(right: 30),
-      height: 120,
-      width: 300,
+      height: MediaQuery.of(context).size.height*0.19,
+      width: MediaQuery.of(context).size.width*0.83,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(15)),
         color: Color(0xfff1f3f6),
@@ -1182,8 +1177,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   //This column for that icon
                   Container(
-                    height: 60,
-                    width: 60,
+                    height: MediaQuery.of(context).size.height*0.1,
+                    width: MediaQuery.of(context).size.width*0.15,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xffffac30),

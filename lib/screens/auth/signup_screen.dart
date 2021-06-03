@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
 
@@ -59,117 +58,124 @@ class _RegisterPageState extends State<RegisterPage> {
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
                 child: Form(
-                  key: _registerFormKey,
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'First Name*', hintText: "John"),
-                        controller: firstNameInputController,
-                        validator: (value) {
-                          if (value.length < 3) {
-                            return ("Please enter a valid first name.");
-                          }
-                        },
-                      ),
-                      TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'Last Name*', hintText: "Doe"),
-                          controller: lastNameInputController,
-                          validator: (value) {
-                            if (value.length < 3) {
-                              return "Please enter a valid last name.";
-                            }
-                          }),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
-                        controller: emailInputController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: emailValidator,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Password*', hintText: "********"),
-                        controller: pwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Confirm Password*', hintText: "********"),
-                        controller: confirmPwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
-                      RaisedButton(
-                        child: Text("Register"),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          if (_registerFormKey.currentState.validate()) {
-                            if (pwdInputController.text ==
-                                confirmPwdInputController.text) {
-                              FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
+              key: _registerFormKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'First Name*', hintText: "John"),
+                    controller: firstNameInputController,
+                    validator: (value) {
+                      if (value.length < 3) {
+                        return ("Please enter a valid first name.");
+                      }
+                    },
+                  ),
+                  TextFormField(
+                      decoration: InputDecoration(
+                          labelText: 'Last Name*', hintText: "Doe"),
+                      controller: lastNameInputController,
+                      validator: (value) {
+                        if (value.length < 3) {
+                          return "Please enter a valid last name.";
+                        }
+                      }),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                    controller: emailInputController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: emailValidator,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Password*', hintText: "********"),
+                    controller: pwdInputController,
+                    obscureText: true,
+                    validator: pwdValidator,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Confirm Password*', hintText: "********"),
+                    controller: confirmPwdInputController,
+                    obscureText: true,
+                    validator: pwdValidator,
+                  ),
+                  RaisedButton(
+                    child: Text("Register"),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    onPressed: () async {
+                      if (_registerFormKey.currentState.validate()) {
+                        if (pwdInputController.text ==
+                            confirmPwdInputController.text) {
+                          FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
-                                  .then((currentUser) => FirebaseFirestore.instance
-                                  .collection("Users")
-                                  .doc(currentUser.user.uid)
-                                  .set({
-                                "uid": currentUser.user.uid,
-                                "firstname": firstNameInputController.text,
-                                "lastname": lastNameInputController.text,
-                                "email": emailInputController.text,
-                              })
-                                  .then((result) => {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Homepage(
-                                          user: currentUser.user)),
-                                        (_) => false),
-                                firstNameInputController.clear(),
-                                lastNameInputController.clear(),
-                                emailInputController.clear(),
-                                pwdInputController.clear(),
-                                confirmPwdInputController.clear()
-                              })
-                                  .catchError((err) => print(err)))
-                                  .catchError((err) => print(err));
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text("Error"),
-                                      content: Text("The passwords do not match"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("Close"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
-                            }
-                          }
-                        },
-                      ),
-                      Text("Already have an account?"),
-                      FlatButton(
-                        child: Text("Login here!"),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LoginPage()),
-                          );
-                        },
-                      )
-                    ],
+                              .then((currentUser) => FirebaseFirestore.instance
+                                      .collection("Users")
+                                      .doc(currentUser.user.uid)
+                                      .set({
+                                    "uid": currentUser.user.uid,
+                                    "firstname": firstNameInputController.text,
+                                    "lastname": lastNameInputController.text,
+                                    "email": emailInputController.text,
+                                  }).then((value) async {
+                                    try {
+                                      await currentUser.user
+                                          .sendEmailVerification();
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => LoginPage(
+                                                  user: currentUser.user)),
+                                          (_) => false);
+                                      firstNameInputController.clear();
+                                      lastNameInputController.clear();
+                                      emailInputController.clear();
+                                      pwdInputController.clear();
+                                      confirmPwdInputController.clear();
+                                    } catch (e) {
+                                      print(
+                                          "An error occurred while trying to send email verification");
+                                      print(e.message);
+                                    }
+                                  }).catchError((err) => print(err)))
+                              .catchError((err) => print(err));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Error"),
+                                  content: Text("The passwords do not match"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text("Close"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                );
+                              });
+                        }
+                      }
+                    },
                   ),
-                ))));
+                  Text("Already have an account?"),
+                  FlatButton(
+                    child: Text("Login here!"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ))));
   }
 }

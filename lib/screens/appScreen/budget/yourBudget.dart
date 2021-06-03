@@ -15,349 +15,26 @@ class MyBudget extends StatefulWidget {
 
 class _MyBudgetState extends State<MyBudget> {
   TextEditingController _limitamountcontroller = new TextEditingController();
-  String _chosenMonth;
   String _chosenCategory;
-  List category = [
-    'Food/Drinks'
-        'Education',
-    'Entertainment',
-    'Transportation',
-    'Regular Expense',
-    'House/Rent',
-    'Health Care',
-    'Dues/Subscriptions',
-    'Savings/Investments',
-    'Others'
-  ];
+
 
   final GlobalKey<FormState> _limitformKey = GlobalKey<FormState>();
 
   void addBudget() {
     setState(() {
-      int value = 0;
-      switch (_chosenMonth.toString()) {
-        case "January":
-          {
-            value = 1;
-          }
-          break;
-        case "February":
-          {
-            value = 2;
-          }
-          break;
-        case "March":
-          {
-            value = 3;
-          }
-          break;
-        case "April":
-          {
-            value = 4;
-          }
-          break;
-        case "May":
-          {
-            value = 5;
-          }
-          break;
-        case "June":
-          {
-            value = 6;
-          }
-          break;
-        case "July":
-          {
-            value = 7;
-          }
-          break;
-        case "August":
-          {
-            value = 8;
-          }
-          break;
-        case "September":
-          {
-            value = 9;
-          }
-          break;
-        case "October":
-          {
-            value = 10;
-          }
-          break;
-        case "November":
-          {
-            value = 11;
-          }
-          break;
-        default:
-          {
-            value = 12;
-          }
-          break;
-      }
-
       Map<String, dynamic> budgettxn = {
-        'BudgetMonth': (_chosenMonth.toString()),
         'BudgetCategory': (_chosenCategory.toString()),
         'BudgetAmount': (_limitamountcontroller.text),
-        'BudgetMonthNumber': value
       };
+
       FirebaseFirestore.instance
           .collection("Users")
           .doc(widget.user.uid)
-          .collection("Budget")
-          .add(budgettxn);
+          .collection("Budget").doc(_chosenCategory)
+          .set(budgettxn);
     });
   }
 
-  Icon runtimeIcon(String category) {
-    if (category == 'Entertainment') {
-      return Icon(
-        Icons.live_tv,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Food/Drinks') {
-      return Icon(
-        Icons.fastfood,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Education') {
-      return Icon(
-        Icons.account_balance_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Daily Expense') {
-      return Icon(
-        Icons.today,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Dues/Subscriptions') {
-      return Icon(
-        Icons.circle_notifications,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'House/Rent') {
-      return Icon(
-        Icons.house_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Transportation') {
-      return Icon(
-        Icons.emoji_transportation_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Savings/Investments') {
-      return Icon(
-        Icons.book_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Salary/BusinessIncome') {
-      return Icon(
-        Icons.attach_money_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else if (category == 'Health Care') {
-      return Icon(
-        Icons.medical_services_outlined,
-        color: Colors.white,
-        size: 40.00,
-      );
-    } else {
-      return Icon(
-        Icons.category_rounded,
-        color: Colors.white,
-        size: 40.00,
-      );
-    }
-  }
-
-  Card makeCard(String category,String month,String budgetAmount,String amountSpent,double gaugeValue,String budgetAmountRemaining) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      elevation: 5,
-      margin: new EdgeInsets.fromLTRB(10, 10, 10, 0),
-      child: Container(
-        padding: EdgeInsets.all(15),
-        height: MediaQuery.of(context).size.height * 0.23,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xfff53803),
-                Color(0xfff5d020),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(20)),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Column(
-                  children: [
-                    Text(
-                      "$category",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Text(
-                    "$month",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ])
-              ]),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Money Spent",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "$amountSpent",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Target",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "$budgetAmount",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Remaining",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "$budgetAmountRemaining",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Container(
-                    // tag: 'hero',
-                    child: SfLinearGauge(
-                      ranges: <LinearGaugeRange>[
-                        //First range
-                        LinearGaugeRange(
-                            startValue: 0, endValue: 50, color: Colors.green),
-                        LinearGaugeRange(
-                            startValue: 50, endValue: 80, color: Colors.yellow),
-                        LinearGaugeRange(
-                            startValue: 80, endValue: 100, color: Colors.red),
-                      ],
-                      markerPointers: [
-                        LinearShapePointer(value: 50),
-                      ],
-                    ),
-                  )),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   Container addLimit() {
     return Container(
@@ -369,48 +46,6 @@ class _MyBudgetState extends State<MyBudget> {
           child: Column(children: [
             SizedBox(
               height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.orange.shade600),
-                  borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.fromLTRB(30, 2, 30, 2),
-              child: DropdownButton<String>(
-                value: _chosenMonth,
-                elevation: 5,
-                style: TextStyle(color: Color(0xffEA6700)),
-                items: <String>[
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                hint: Text(
-                  "Choose Your Budget Month",
-                  style: TextStyle(
-                      color: Colors.orangeAccent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                ),
-                onChanged: (String value) {
-                  setState(() {
-                    _chosenMonth = value;
-                  });
-                },
-              ),
             ),
             SizedBox(
               height: 10,
@@ -428,15 +63,14 @@ class _MyBudgetState extends State<MyBudget> {
                 ),
 
                 items: <String>[
-                  'Food/Drinks',
+                  'Food Items',
                   'Education',
                   'Entertainment',
                   'Transportation',
                   'Daily Expense',
-                  'House/Rent',
+                  'House Rent',
                   'Health Care',
-                  'Dues/Subscriptions',
-                  'Savings/Investments',
+                  'Dues Subscriptions',
                   'Others'
                 ].map<DropdownMenuItem<String>>((String vvalue) {
                   return DropdownMenuItem<String>(
@@ -536,18 +170,6 @@ class _MyBudgetState extends State<MyBudget> {
     );
   }
 
-  String getBudgetAmountSpent(String category){
-    return 1000.toString();
-  }
-
-  double getGaugeValue(){
-    return 1000;
-  }
-
-  String getBudgetAmountRemaining(){
-    return 1000.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -565,10 +187,10 @@ class _MyBudgetState extends State<MyBudget> {
             children: [
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Create Your Budget",
+                    "Add Limits",
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.w800,
@@ -579,6 +201,19 @@ class _MyBudgetState extends State<MyBudget> {
               ),
               SizedBox(
                 height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "To Your Desired Category",
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'avenir',
+                    ),
+                  ),
+                ],
               ),
               //This container for that whole white box and icon
               SingleChildScrollView(
@@ -601,68 +236,6 @@ class _MyBudgetState extends State<MyBudget> {
                 height: 10,
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Your Budget Limits',
-                    style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'avenir',
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("Users")
-                          .doc(widget.user.uid)
-                          .collection('Budget')
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: Text('No Data Available'),
-                          );
-                        }
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          width: MediaQuery.of(context).size.width * 0.83,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            //color: Color(0xfff1f3f6),
-                          ),
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot txndata = snapshot.data.docs[index];
-                              return makeCard(
-                                  txndata['BudgetCategory'].toString(),
-                                  txndata['BudgetMonth'].toString(),
-                                  txndata['BudgetAmount'].toString(),
-                                  getBudgetAmountSpent(txndata['BudgetCategory']),
-                                  getGaugeValue(),
-                                  getBudgetAmountRemaining().toString(),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
