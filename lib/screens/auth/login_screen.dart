@@ -49,8 +49,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xffffac30),
           title: Text("Login"),
         ),
+        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -80,8 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 10,),
                       RaisedButton(
+                          color: Color(0xffffac30),
                         child: Text("Login"),
-                        color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
                         onPressed: () {
                           if (_loginFormKey.currentState.validate()) {
@@ -125,7 +127,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Text("Don't have an account yet?"),
                       FlatButton(
+                          color: Color(0xffffac30),
                         child: Text("Register here!"),
+                        textColor: Colors.white,
                         onPressed: () {
                           Navigator.push(context,
                             MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -138,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                             MaterialPageRoute(builder: (context) => ForgetPassword(user: widget.user,)),
                           );
                         },
-                        textColor: Colors.blue,
+                        textColor: Color(0xffffac30),
                         child: Text('Forgot Password'),
                       ),
                     ],

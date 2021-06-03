@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class CircularData {
-  final String TransactionName;
+  final String transactionName;
   final int amount;
   Color color;
-  CircularData(this.TransactionName, this.amount, this.color);
+  CircularData(this.transactionName, this.amount, this.color);
 }

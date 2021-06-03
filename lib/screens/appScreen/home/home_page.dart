@@ -4,7 +4,6 @@ import 'package:ewall/screens/appScreen/sideMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Homepage extends StatefulWidget {
   static const routeName = '/home';
   Homepage({Key key,this.user}) : super(key: key);
-  User user;
+  final User user;
   @override
   _HomepageState createState() => _HomepageState();
 }

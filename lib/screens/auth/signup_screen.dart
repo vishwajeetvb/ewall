@@ -1,4 +1,3 @@
-import 'package:ewall/screens/appScreen/home/home_page.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,9 +50,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         appBar: AppBar(
           title: Text("Register"),
+            backgroundColor: Color(0xffffac30)
         ),
+        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -102,8 +104,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: pwdValidator,
                   ),
                   RaisedButton(
+                    color: Color(0xffffac30),
                     child: Text("Register"),
-                    color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
                     onPressed: () async {
                       if (_registerFormKey.currentState.validate()) {
@@ -166,7 +168,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   Text("Already have an account?"),
                   FlatButton(
+                    color: Color(0xffffac30),
                     child: Text("Login here!"),
+                    textColor: Colors.white,
                     onPressed: () {
                       Navigator.push(
                         context,

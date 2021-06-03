@@ -34,6 +34,7 @@ class _AreaChartState extends State<AreaChart> {
             SfCartesianChart(
                 primaryXAxis: CategoryAxis(),
                 tooltipBehavior: TooltipBehavior(enable: true),
+                zoomPanBehavior: _zoomPanBehavior,
                 series: <ChartSeries>[
                   SplineAreaSeries<AreaChartData, DateTime>(
                     color: Colors.red,

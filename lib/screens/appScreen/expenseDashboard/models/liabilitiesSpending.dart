@@ -1,6 +1,5 @@
 import '../classes/SpendingData.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'LineChart.dart';

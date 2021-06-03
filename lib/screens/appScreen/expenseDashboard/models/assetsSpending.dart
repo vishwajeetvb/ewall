@@ -3,7 +3,6 @@ import 'package:ewall/screens/appScreen/expenseDashboard/models/LineChart.dart';
 
 import '../classes/SpendingData.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AssetsSpending extends StatefulWidget {
@@ -17,7 +16,6 @@ class AssetsSpending extends StatefulWidget {
 class _AssetsSpendingState extends State<AssetsSpending> {
 
   List<LinearChartData> assetdata = [];
-  ZoomPanBehavior _zoomPanBehavior;
 
   @override
   void initState() {

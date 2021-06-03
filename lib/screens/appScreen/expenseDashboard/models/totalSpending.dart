@@ -126,11 +126,11 @@ class _TotalSpendingState extends State<TotalSpending> {
   void getCCGraphData(){
     var collectionReference = FirebaseFirestore.instance.collection("Users").doc(widget.uid)
         .collection('Transaction');
-    double TotalAmount=0;
+    double totalAmount=0;
     collectionReference.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         setState(() {
-          TotalAmount = TotalAmount + element['TransactionAmount'];
+          totalAmount = totalAmount + element['TransactionAmount'];
         });
       }
       );
@@ -146,7 +146,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Food Items',((amount/TotalAmount)*100).toInt(),Color(0xff003F5C)));
+        others.add(CircularData('Food Items',((amount/totalAmount)*100).toInt(),Color(0xff003F5C)));
       });
     }
     );
@@ -159,7 +159,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Education',((amount/TotalAmount)*100).toInt(),Color(0xff58508D)));
+        others.add(CircularData('Education',((amount/totalAmount)*100).toInt(),Color(0xff58508D)));
       });
     }
     );
@@ -174,7 +174,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Entertainment',((amount/TotalAmount)*100).toInt(),Color(0xffBC5090)));
+        others.add(CircularData('Entertainment',((amount/totalAmount)*100).toInt(),Color(0xffBC5090)));
       });
     }
     );
@@ -190,7 +190,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Transportation',((amount/TotalAmount)*100).toInt(),Color(0xffFF6361)));
+        others.add(CircularData('Transportation',((amount/totalAmount)*100).toInt(),Color(0xffFF6361)));
       });
     }
     );
@@ -205,7 +205,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Daily Expense',((amount/TotalAmount)*100).toInt(),Color(0xffFFA600)));
+        others.add(CircularData('Daily Expense',((amount/totalAmount)*100).toInt(),Color(0xffFFA600)));
       });
     }
     );
@@ -220,7 +220,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('House Rent',((amount/TotalAmount)*100).toInt(),Color(0xff93F03B)));
+        others.add(CircularData('House Rent',((amount/totalAmount)*100).toInt(),Color(0xff93F03B)));
       });
 
     }
@@ -236,7 +236,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Health Care',((amount/TotalAmount)*100).toInt(),Color(0xff9552EA)));
+        others.add(CircularData('Health Care',((amount/totalAmount)*100).toInt(),Color(0xff9552EA)));
       });
 
     }
@@ -252,7 +252,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Dues Subscriptions',((amount/TotalAmount)*100).toInt(),Color(0xff378AFF)));
+        others.add(CircularData('Dues Subscriptions',((amount/totalAmount)*100).toInt(),Color(0xff378AFF)));
       });
 
     }
@@ -268,7 +268,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Savings Investments',((amount/TotalAmount)*100).toInt(),Color(0xffFE8B02)));
+        others.add(CircularData('Savings Investments',((amount/totalAmount)*100).toInt(),Color(0xffFE8B02)));
       });
 
     }
@@ -284,7 +284,7 @@ class _TotalSpendingState extends State<TotalSpending> {
       }
       );
       setState(() {
-        others.add(CircularData('Others',((amount/TotalAmount)*100).toInt(),Color(0xff9D0BFA)));
+        others.add(CircularData('Others',((amount/totalAmount)*100).toInt(),Color(0xff9D0BFA)));
       });
 
     }
