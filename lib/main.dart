@@ -1,5 +1,4 @@
 import 'package:ewall/screens/appScreen/home/home_page.dart';
-
 import 'package:ewall/screens/appScreen/startingScreen/firstScreen.dart';
 import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:ewall/screens/auth/signup_screen.dart';
