@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         child: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                              labelText: 'Email*', hintText: "user@gmail.com"),
                           controller: emailInputController,
                           keyboardType: TextInputType.emailAddress,
                           validator: emailValidator,

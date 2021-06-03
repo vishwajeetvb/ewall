@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'First Name*', hintText: "John"),
+                        labelText: 'First Name*', hintText: "UserFirstName"),
                     controller: firstNameInputController,
                     validator: (value) {
                       if (value.length < 3) {
@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextFormField(
                       decoration: InputDecoration(
-                          labelText: 'Last Name*', hintText: "Doe"),
+                          labelText: 'Last Name*', hintText: "UserLastName"),
                       controller: lastNameInputController,
                       validator: (value) {
                         if (value.length < 3) {
@@ -84,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                        labelText: 'Email*', hintText: "user@gmail.com"),
                     controller: emailInputController,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
