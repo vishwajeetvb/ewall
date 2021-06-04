@@ -4,6 +4,7 @@ import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -96,6 +97,14 @@ class _LoginPageState extends State<LoginPage> {
                                 .doc(currentUser.user.uid)
                                 .get().then((value) {
                                   if(currentUser.user.emailVerified){
+                                    Fluttertoast.showToast(
+                                        msg: "Login Successful",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 3,
+                                        textColor: Colors.black,
+                                        fontSize: 16.0
+                                    );
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -127,9 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Text("Don't have an account yet?"),
                       FlatButton(
-                          color: Color(0xffffac30),
                         child: Text("Register here!"),
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         onPressed: () {
                           Navigator.push(context,
                             MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -145,6 +153,9 @@ class _LoginPageState extends State<LoginPage> {
                         textColor: Color(0xffffac30),
                         child: Text('Forgot Password'),
                       ),
+
+
+
                     ],
                   ),
                 ))));

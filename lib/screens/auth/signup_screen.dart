@@ -2,6 +2,7 @@ import 'package:ewall/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -127,12 +128,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                     try {
                                       await currentUser.user
                                           .sendEmailVerification();
-                                      Navigator.pushAndRemoveUntil(
+                                      Fluttertoast.showToast(
+                                          msg: "Verification Email Sent",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 3,
+                                          textColor: Colors.black,
+                                          fontSize: 16.0
+                                      );
+                                      Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => LoginPage(
                                                   user: currentUser.user)),
-                                          (_) => false);
+                                         );
                                       firstNameInputController.clear();
                                       lastNameInputController.clear();
                                       emailInputController.clear();
