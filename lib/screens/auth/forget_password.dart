@@ -37,8 +37,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.orange,
           title: Text("Forget Password"),
         ),
+        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
