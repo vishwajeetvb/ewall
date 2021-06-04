@@ -129,8 +129,25 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                   }
                                 })
-                                .catchError((err) => print(err)))
-                                .catchError((err) => print(err));
+                                .catchError((err) =>
+                                Fluttertoast.showToast(
+                                    msg: err,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 3,
+                                    textColor: Colors.black,
+                                    fontSize: 16.0
+                                )
+                            ))
+                                .catchError((err) =>
+                                Fluttertoast.showToast(
+                                    msg: err,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 3,
+                                    textColor: Colors.black,
+                                    fontSize: 16.0
+                                ));
                           }
                         },
                       ),
@@ -153,9 +170,6 @@ class _LoginPageState extends State<LoginPage> {
                         textColor: Color(0xffffac30),
                         child: Text('Forgot Password'),
                       ),
-
-
-
                     ],
                   ),
                 ))));

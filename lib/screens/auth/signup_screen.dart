@@ -150,10 +150,33 @@ class _RegisterPageState extends State<RegisterPage> {
                                     } catch (e) {
                                       print(
                                           "An error occurred while trying to send email verification");
-                                      print(e.message);
+                                      Fluttertoast.showToast(
+                                          msg: e,
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 3,
+                                          textColor: Colors.black,
+                                          fontSize: 16.0
+                                      );
                                     }
-                                  }).catchError((err) => print(err)))
-                              .catchError((err) => print(err));
+                                  }).catchError((err) =>
+                              Fluttertoast.showToast(
+                                  msg: err,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 3,
+                                  textColor: Colors.black,
+                                  fontSize: 16.0
+                              )))
+                              .catchError((err) =>
+                              Fluttertoast.showToast(
+                                  msg: err,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 3,
+                                  textColor: Colors.black,
+                                  fontSize: 16.0
+                              ));
                         } else {
                           showDialog(
                               context: context,
