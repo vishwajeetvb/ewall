@@ -61,7 +61,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       SizedBox(height: 10,),
                       RaisedButton(
                         child: Text("Send Reset Link"),
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.orange,
                         textColor: Colors.white,
                         onPressed: () {
                           if (_forgetFormKey.currentState.validate()){
