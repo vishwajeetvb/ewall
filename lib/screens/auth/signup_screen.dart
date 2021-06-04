@@ -151,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       print(
                                           "An error occurred while trying to send email verification");
                                       Fluttertoast.showToast(
-                                          msg: e,
+                                          msg: e.toString(),
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 3,
@@ -161,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     }
                                   }).catchError((err) =>
                               Fluttertoast.showToast(
-                                  msg: err,
+                                  msg: err.toString(),
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 3,
@@ -170,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               )))
                               .catchError((err) =>
                               Fluttertoast.showToast(
-                                  msg: err,
+                                  msg: err.toString(),
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 3,

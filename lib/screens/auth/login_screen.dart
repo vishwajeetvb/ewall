@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                 })
                                 .catchError((err) =>
                                 Fluttertoast.showToast(
-                                    msg: err,
+                                    msg: err.toString(),
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 3,
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                             ))
                                 .catchError((err) =>
                                 Fluttertoast.showToast(
-                                    msg: err,
+                                    msg: err.toString(),
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 3,
