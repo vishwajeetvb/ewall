@@ -27,6 +27,7 @@ class _SideDrawerState extends State<SideDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+
       child: Column(
         children: <Widget>[
           DrawerHeader(
@@ -55,11 +56,6 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: Icon(Icons.monetization_on_sharp),
             title: Text('Expense Dashboard'),
             onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ExpenseManagement(user: widget.user,)))},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

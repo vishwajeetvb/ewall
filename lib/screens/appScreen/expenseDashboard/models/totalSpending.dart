@@ -31,6 +31,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     "House Rent":0.0,
     "Health Care":0.0,
     "Dues Subscriptions":0.0,
+    "Savings Investments":0.0,
     "Others":0.0,
   };
 
@@ -43,6 +44,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     "House Rent":0.0,
     "Health Care":0.0,
     "Dues Subscriptions":0.0,
+    "Savings Investments":0.0,
     "Others":0.0,
   };
 
@@ -55,6 +57,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     "House Rent":0.0,
     "Health Care":0.0,
     "Dues Subscriptions":0.0,
+    "Savings Investments":0.0,
     "Others":0.0,
   };
 
@@ -73,6 +76,7 @@ class _TotalSpendingState extends State<TotalSpending> {
     getRGData('House Rent');
     getRGData('Health Care');
     getRGData('Dues Subscriptions');
+    getRGData('Savings Investments');
     getRGData('Others');
   }
 
@@ -329,8 +333,14 @@ class _TotalSpendingState extends State<TotalSpending> {
       if(myGaugeAmountSpent[category]==0){
         myGaugeAmountPercentage[category]=0.0;
       }else{
-        myGaugeAmountPercentage[category]=(myGaugeAmountSpent[category])/myGaugeAmountLimit[category]*100;
-        print("perce gauge "+myGaugeAmountPercentage[category].toString());
+        if(myGaugeAmountLimit[category]==0){
+          myGaugeAmountPercentage[category]=0.0;
+        }else {
+          myGaugeAmountPercentage[category] =
+              (myGaugeAmountSpent[category]) / myGaugeAmountLimit[category] *
+                  100;
+          print("perce gauge " + myGaugeAmountPercentage[category].toString());
+        }
       }
 
     });
@@ -416,6 +426,11 @@ class _TotalSpendingState extends State<TotalSpending> {
                     Container(
                       height: MediaQuery.of(context).size.height*0.53,
                       child: RadialChart(title: 'Dues Subscriptions',value: myGaugeAmountPercentage['Dues Subscriptions'],),
+                    ),
+                    SizedBox(height: 20,),
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.53,
+                      child: RadialChart(title: 'Savings Investments',value: myGaugeAmountPercentage['Savings Investments'],),
                     ),
                     SizedBox(height: 20,),
                     Container(

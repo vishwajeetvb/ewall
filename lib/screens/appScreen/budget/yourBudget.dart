@@ -71,6 +71,7 @@ class _MyBudgetState extends State<MyBudget> {
                   'House Rent',
                   'Health Care',
                   'Dues Subscriptions',
+                  'Savings Investments',
                   'Others'
                 ].map<DropdownMenuItem<String>>((String vvalue) {
                   return DropdownMenuItem<String>(

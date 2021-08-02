@@ -257,6 +257,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               'Health Care',
                               'Dues Subscriptions',
                               'Savings Investments',
+                              'Salary BusinessIncome',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -554,6 +555,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               'Health Care',
                               'Dues Subscriptions',
                               'Savings Investments',
+                              'Salary BusinessIncome',
                               'Others'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -718,6 +720,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Container(
                   constraints: BoxConstraints(
                     maxHeight: double.infinity,
+                    maxWidth: double.infinity
                   ),
                   child:
                     Column(
@@ -744,8 +747,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(30.0)),
                                   child: Container(
                                     margin: EdgeInsets.all(3),
-                                    constraints: BoxConstraints(
-                                        maxWidth: MediaQuery.of(context).size.width*0.59, minHeight: 50.0),
+
                                     alignment: Alignment.center,
                                     child: Row(
                                         children: [
@@ -756,7 +758,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             style:
                                             TextStyle(color: Colors.white, fontSize: 15),
                                           ),
-                                          SizedBox(width: 20),
+                                          SizedBox(width: 15),
                                           IconButton(
                                               onPressed: () {
 
@@ -799,8 +801,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(30.0)),
                                   child: Container(
                                     margin: EdgeInsets.all(3),
-                                    constraints: BoxConstraints(
-                                        maxWidth: MediaQuery.of(context).size.width*0.59, minHeight: 50.0),
+
                                     alignment: Alignment.center,
                                     child: Row(
                                         children: [
@@ -811,7 +812,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             style:
                                             TextStyle(color: Colors.white, fontSize: 15),
                                           ),
-                                          SizedBox(width: 20),
+                                          SizedBox(width: 15),
                                           IconButton(
                                               onPressed: () {
 

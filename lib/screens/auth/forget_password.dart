@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'login_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class ForgetPassword extends StatefulWidget {
   final User user;
-  const ForgetPassword({Key key,this.user}) : super(key: key);
+  const ForgetPassword({@required Key key,@required this.user}) : super(key: key);
 
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-
   final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
   TextEditingController forgemailInputController = new TextEditingController();
 
@@ -31,6 +30,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   Future<void> resetPassword(String email) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    Fluttertoast.showToast(
+        msg: "Email Sent",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        textColor: Colors.black,
+        fontSize: 16.0
+    );
   }
 
   @override
@@ -52,7 +59,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
                         child: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                              labelText: 'Email*', hintText: "user@gmail.com"),
                           controller: forgemailInputController,
                           keyboardType: TextInputType.emailAddress,
                           validator: emailValidator,
@@ -76,6 +83,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           Navigator.push(context,
                             MaterialPageRoute(builder: (context) => LoginPage(user: widget.user,)),
                           );
+
+
                         },
                       ),
 

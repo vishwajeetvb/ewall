@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                       FlatButton(
                         onPressed: (){
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => ForgetPassword(user: widget.user,)),
+                            MaterialPageRoute(builder: (context) => ForgetPassword(user: widget.user, key: null,)),
                           );
                         },
                         textColor: Color(0xffffac30),

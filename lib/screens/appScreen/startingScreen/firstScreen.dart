@@ -1,5 +1,6 @@
 
 import 'package:ewall/screens/appScreen/home/home_page.dart';
+import 'package:ewall/screens/auth/login_screen.dart';
 
 import 'package:ewall/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _IntroScreenState extends State<IntroScreen> {
         .authStateChanges()
         .listen((User user) {
       if (user == null) {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => RegisterPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
       } else {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Homepage(user: user)));
       }
@@ -67,7 +68,12 @@ class _IntroScreenState extends State<IntroScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //This text to show the time on screen
-                    Text("06:22 AM",style: TextStyle(
+                    Text(DateTime.now().hour.toString(),style: TextStyle(
+                        fontSize: 30,
+                        fontFamily: 'avenir',
+                        fontWeight: FontWeight.w500
+                    ),),
+                    Text(":"+DateTime.now().minute.toString(),style: TextStyle(
                         fontSize: 30,
                         fontFamily: 'avenir',
                         fontWeight: FontWeight.w500
@@ -79,12 +85,25 @@ class _IntroScreenState extends State<IntroScreen> {
 
                   ],
                 ),
+                Row(
 
+                  children:[
+                    Text(DateTime.now().day.toString(), style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey
+                    ),),
+                    Text("/"+DateTime.now().month.toString(), style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey
+                    ),),
+                    Text("/"+DateTime.now().year.toString(), style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey
+                    ),),
+                  ],
+                ),
                 //This text for display of current date and day
-                Text("Aug 1, 2020 | Wednesday", style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey
-                ),),
+
 
                 //Expanded Widget used to put the center content on screen
                 Expanded(
